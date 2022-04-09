@@ -1,0 +1,43 @@
+header {
+  background: #242424;
+  height: 70px;
+  // position: fixed;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.08),
+    0 2px 4px 0 rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid white;
+
+  .brand-image {
+    height: 80px;
+    width: 50px;
+    margin-left: 60px;
+    position: relative;
+    top: -5px;
+  }
+
+  .header-container {
+    margin-left: auto !important;
+    margin-right: 60px !important;
+
+    .login-container {
+      margin: auto 1rem;
+      padding: 0 5px !important;
+
+      input {
+        margin-right: 1rem;
+      }
+    }
+
+    .hamburger-icon {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+
+      .hamburger-section {
+        margin-bottom: 3px;
+        width: 30px;
+        height: 5px;
+        background-color: white;
+      }
+    }
+  }
+}
