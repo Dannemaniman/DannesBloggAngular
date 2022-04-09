@@ -1,0 +1,38 @@
+footer {
+  position: sticky;
+  top: 100vh;
+  height: 300px;
+  width: 100%;
+  background-color: black;
+
+  .brand-container {
+    margin-right: 3rem;
+
+    .brand-text {
+      font-family: 'Roboto', monospace;
+      color: #FFFFFF;
+      font-size: 50px;
+      letter-spacing: -4px;
+    }
+
+    .brand-slogan {
+      font-family: 'Roboto', monospace;
+      color: #FFFFFF;
+    }
+  }
+
+  .footer-links div {
+    margin-right: 3rem;
+
+
+    .footer-subtitle {
+      color: #C8B0F9;
+
+      &~p>a {
+        list-style: none;
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  }
+}
