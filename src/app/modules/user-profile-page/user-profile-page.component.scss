@@ -1,0 +1,139 @@
+.user-profile__container {
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 3rem;
+
+  .user-profile__settings {
+    background-color: #6D6D6D;
+    border: 1px solid #707070;
+    border-radius: 10px;
+    overflow: hidden;
+
+    .profile-settings__panel {
+      background-color: #484848;
+      border: 1px solid #707070;
+      margin-bottom: 2rem;
+
+      p {
+        padding: 1rem;
+        margin-bottom: 0;
+        color: #D5D5D5;
+        font-size: 1.5rem;
+        text-decoration: underline;
+      }
+    }
+
+    .password-controller {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-left: 3rem;
+
+      p {
+        margin-bottom: 0;
+        margin-right: 3.5rem;
+        color: #D5D5D5;
+      }
+    }
+
+    .confirm-controller {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-left: 3rem;
+
+      p {
+        margin-bottom: 0;
+        margin-right: 2rem;
+        color: #D5D5D5;
+      }
+    }
+
+    .change-password__button {
+      display: flex;
+      flex-direction: row;
+      margin-left: 6rem;
+      margin-bottom: 2rem;
+
+      button {
+        padding: 0.8rem 2.5rem;
+        border-radius: 50px;
+        color: black;
+        background-color: white;
+      }
+    }
+
+    .delete-controller {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 4rem;
+      padding-left: 3rem;
+
+      p {
+        margin-bottom: 0;
+        margin-right: 5rem;
+        color: #D5D5D5;
+      }
+
+      button {
+        padding: 0.8rem 2.5rem;
+        border-radius: 50px;
+        color: white;
+        background-color: red;
+      }
+    }
+  }
+
+  .user-profile__threads {
+    background-color: #6D6D6D;
+    border: 1px solid #707070;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 3rem;
+
+    .profile-threads__panel {
+      background-color: #484848;
+      border: 1px solid #707070;
+
+      p {
+        padding: 1rem;
+        margin-bottom: 0;
+        color: #D5D5D5;
+        font-size: 1.5rem;
+        text-decoration: underline;
+      }
+    }
+
+    .profile-threads__content {
+      margin-bottom: 3rem;
+    }
+  }
+
+  .user-profile__replies {
+    margin-top: 3rem;
+    background-color: #6D6D6D;
+    border: 1px solid #707070;
+    border-radius: 10px;
+    overflow: hidden;
+
+    .profile-replies__panel {
+      background-color: #484848;
+      border: 1px solid #707070;
+
+      p {
+        padding: 1rem;
+        margin-bottom: 0;
+        color: #D5D5D5;
+        font-size: 1.5rem;
+        text-decoration: underline;
+      }
+    }
+
+    .profile-replies__content {
+      margin-bottom: 3rem;
+    }
+  }
+}
