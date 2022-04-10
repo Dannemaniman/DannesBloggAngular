@@ -24,9 +24,15 @@ export class ThreadDetailPageComponent implements OnInit {
     date: "20:48  18/6-2022"
   }
 
+  public toggleReply: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public toggleReplying() {
+    this.toggleReply = !this.toggleReply
   }
 
 }

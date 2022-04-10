@@ -1,0 +1,56 @@
+:host {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.reply__container {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  text-align: center;
+  padding: 2rem;
+  background-color: #B9B9B9;
+  width: 80%;
+  border-radius: 10px;
+  max-height: fit-content;
+
+  input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #707070;
+    margin-bottom: 1rem;
+  }
+
+  textarea {
+    min-height: 300px;
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    width: 6rem;
+    height: 2.5rem;
+    background-color: #FFFFFF;
+    border: 1px solid #707070;
+    color: #989898;
+    border-radius: 10px;
+  }
+}
+
+.backdrop {
+  position: absolute;
+  filter: blur(10px);
+  height: 100%;
+  width: 100%;
+  background-color: rgba($color: black, $alpha: 0.5);
+  overflow: hidden;
+}

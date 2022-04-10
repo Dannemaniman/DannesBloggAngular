@@ -1,0 +1,6 @@
+<div class="backdrop" (click)="toggleReplying()"></div>
+<div class="reply__container">
+  <input type="text" placeholder="Title..." #title />
+  <textarea type="text" placeholder="Message..." #message></textarea>
+  <button (click)="postReply(title.value, message.value)">Reply</button>
+</div>
