@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public login(email: HTMLInputElement, password: HTMLInputElement) {
-    console.log(email.value, password.value) 
+    console.log(email.value, password.value)
   }
 
 }
