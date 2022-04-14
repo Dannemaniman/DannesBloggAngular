@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core'
 import { NgForm } from "@angular/forms"
 import { RegisterUser } from "../../models/register-user"
+import { HttpService } from "../../services/http.service"
 
 @Component({
   selector: 'app-register-modal',
@@ -11,7 +12,7 @@ export class RegisterModalComponent implements OnInit, AfterViewInit {
   @Output() dismiss: EventEmitter<RegisterUser> = new EventEmitter();
   @ViewChild("form") signupForm: NgForm | undefined
 
-  constructor() { }
+  constructor(private http: HttpService) { }
 
   ngOnInit(): void {
     document.body.style.overflow = 'hidden'
@@ -32,6 +33,8 @@ export class RegisterModalComponent implements OnInit, AfterViewInit {
       email: this.signupForm?.value.userData.email,
       password: this.signupForm?.value.userData.password,
     }
+
+    this.http.registerUser(user)
 
     this.signupForm?.reset()
     this.dismiss.emit(user)
