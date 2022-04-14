@@ -9,6 +9,9 @@
       <button class="btn btn-light" role="button" (click)="login(email, password)">
         Log in
       </button>
+      <button class="btn btn-light" style="margin-left: 1rem;" role="button" (click)="toggleRegisterModal()">
+        Register
+      </button>
     </div>
     <div class="hamburger-icon" (click)="popMenu()">
       <div class="hamburger-section"></div>
@@ -17,3 +20,4 @@
     </div>
   </div>
 </header>
+<app-register-modal (dismiss)="toggleRegisterModal()" *ngIf="showRegisterModal"></app-register-modal>

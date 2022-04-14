@@ -1,0 +1,33 @@
+<div class="backdrop" (click)="dismissModal()"></div>
+<div class="register__container">
+  <form (ngSubmit)="registerUser(form)" #form="ngForm">
+    <div id="user-data" ngModelGroup="userData" #userData="ngModelGroup">
+      <div class="form-group">
+        <label for="firstname">First name:</label>
+        <input required type="text" id="firstname" class="form-control" ngModel name="firstname" />
+      </div>
+      <div class="form-group">
+        <label for="lastname">Last name:</label>
+        <input required type="text" id="lastname" class="form-control" ngModel name="lastname" />
+      </div>
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input required type="number" id="age" class="form-control" ngModel name="age" />
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input required email type="email" id="age" class="form-control" ngModel name="email" />
+      </div>
+      <div class="form-group">
+        <label for="text">Password:</label>
+        <input required type="text" id="password" class="form-control" ngModel name="password" />
+      </div>
+      <div class="form-group">
+        <label for="text">Confirm Password:</label>
+        <input required type="text" id="confirm-password" class="form-control" ngModel name="confirm-password" />
+        <span>Please Enter valid pass..</span>
+      </div>
+      <button [disabled]="!form.valid" type="submit">Submit</button>
+    </div>
+  </form>
+</div>

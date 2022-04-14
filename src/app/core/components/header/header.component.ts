@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core'
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  public showRegisterModal = false;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public toggleRegisterModal() {
+    this.showRegisterModal = !this.showRegisterModal
   }
 
   public popMenu() {
