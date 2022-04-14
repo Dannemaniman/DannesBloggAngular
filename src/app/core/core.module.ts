@@ -4,7 +4,9 @@ import { HeaderComponent } from './components/header/header.component'
 import { FooterComponent } from './components/footer/footer.component'
 import { MainMenuComponent } from './components/main-menu/main-menu.component'
 import { ThreadBarComponent } from './components/thread-bar/thread-bar.component'
-import { ReplyComponent } from './components/reply/reply.component'
+import { ReplyComponent } from './components/reply/reply.component';
+import { RegisterModalComponent } from './components/register-modal/register-modal.component'
+import { FormsModule } from "@angular/forms"
 
 
 @NgModule({
@@ -13,10 +15,12 @@ import { ReplyComponent } from './components/reply/reply.component'
     FooterComponent,
     MainMenuComponent,
     ThreadBarComponent,
-    ReplyComponent
+    ReplyComponent,
+    RegisterModalComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [
     HeaderComponent,
