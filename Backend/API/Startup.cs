@@ -30,11 +30,13 @@ namespace API
     //OCH SÅ KOMMER DOTNET CORE LÖSA.. SKAPANDET AV DESSA CLASSER OCH DESTRUCTION AV DESSA CLASSER NÄR DEM INTE ANVÄNDS LÄNGRE!!
     public void ConfigureServices(IServiceCollection services)
     {
+      //ORDNINGEN SPELAR INGEN ROLL HÄR... MEN DEN GÖR I CONFIGURE METODEN!
       services.AddDbContext<DataContext>(options =>
       {
         options.UseSqlite(_config.GetConnectionString("DefaultConnection")); //Inuti appsettings.development.json så märker jag att, SQLites connection strings är jätteenkla.. bara namnet på filen där vi vill storea databasen..!
       });
       services.AddControllers();
+      services.AddCors();
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
@@ -55,6 +57,8 @@ namespace API
       app.UseHttpsRedirection();//VI ANVÄNDER OCKSÅ HTTPSREDIRECTION.. SÅ IFALL USERN KOMMER IN VIA HTTPS.. SÅ REDIRECTAS USERN TILL HTTPS ENDPOINTS!!:
 
       app.UseRouting();
+
+      app.UseCors(policy => policy.AllowAnyHeader().WithOrigins("http://localhost:4200"));
 
       app.UseAuthorization();
 

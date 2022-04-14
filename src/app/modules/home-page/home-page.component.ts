@@ -1,4 +1,7 @@
+import { HttpClient } from "@angular/common/http"
 import { Component, OnInit } from '@angular/core'
+import { Observable, throwError } from 'rxjs'
+import { catchError, retry } from 'rxjs/operators'
 
 @Component({
   selector: 'app-home-page',
@@ -53,9 +56,14 @@ export class HomePageComponent implements OnInit {
     { title: "Discipline", threadCount: "2" },
   ]
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
+    this.http.get("https://localhost:5001/api/users").subscribe(response => {
+      console.log(response)
+    }, error => {
+      console.log(error)
+    })
   }
 
 }

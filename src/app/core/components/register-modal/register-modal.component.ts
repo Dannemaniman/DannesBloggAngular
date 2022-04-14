@@ -27,6 +27,7 @@ export class RegisterModalComponent implements OnInit, AfterViewInit {
     const user: RegisterUser = {
       firstname: this.signupForm?.value.userData.firstname,
       lastname: this.signupForm?.value.userData.lastname,
+      username: this.signupForm?.value.userData.username,
       age: this.signupForm?.value.userData.age,
       email: this.signupForm?.value.userData.email,
       password: this.signupForm?.value.userData.password,
