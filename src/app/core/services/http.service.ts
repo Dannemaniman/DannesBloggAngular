@@ -17,4 +17,10 @@ export class HttpService {
       .subscribe(response => console.log(response))
   }
 
+  public login(UserName: string, Password: string) {
+    const user = { UserName, Password }
+    this.http.post(`${this.ROOT_URL}/account/login`, user)
+      .subscribe(response => console.log(response))
+  }
+
 }

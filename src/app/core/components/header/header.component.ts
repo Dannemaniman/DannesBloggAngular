@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { HttpService } from "../../services/http.service"
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core'
 export class HeaderComponent implements OnInit {
   public showRegisterModal = false;
 
-  constructor() { }
+  constructor(private http: HttpService) { }
 
   ngOnInit(): void {
   }
@@ -21,8 +22,9 @@ export class HeaderComponent implements OnInit {
     console.log("Open menu clicked.")
   }
 
-  public login(email: HTMLInputElement, password: HTMLInputElement) {
-    console.log(email.value, password.value)
+  public login(username: HTMLInputElement, password: HTMLInputElement) {
+    this.http.login(username.value, password.value)
+    // console.log(email.value, password.value)
   }
 
 }
