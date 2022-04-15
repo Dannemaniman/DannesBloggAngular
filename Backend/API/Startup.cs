@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.Interfaces;
+using API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +37,7 @@ namespace API
       {
         options.UseSqlite(_config.GetConnectionString("DefaultConnection")); //Inuti appsettings.development.json så märker jag att, SQLites connection strings är jätteenkla.. bara namnet på filen där vi vill storea databasen..!
       });
+      services.AddScoped<ITokenService, TokenService>();
       services.AddControllers();
       services.AddCors();
       services.AddSwaggerGen(c =>
