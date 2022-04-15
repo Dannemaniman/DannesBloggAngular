@@ -3,14 +3,19 @@
     <img class="brand-image" src="../../../../assets/D.png" alt="home" />
   </div>
   <div class="m-0 d-flex align-items-center header-container">
-    <div class="login-container">
+    <div class="login-container" *ngIf="!(this.accountService.currentUser$ | async)">
       <input placeholder="Username..." #email>
       <input placeholder="Password..." #password>
-      <button class="btn btn-light" role="button" (click)="login(email, password)">
+      <button class="btn btn-light" role="button" (click)="onLoginHandler(email, password)">
         Log in
       </button>
       <button class="btn btn-light" style="margin-left: 1rem;" role="button" (click)="toggleRegisterModal()">
         Register
+      </button>
+    </div>
+    <div class="login-container" *ngIf="this.accountService.currentUser$ | async">
+      <button class="btn btn-light" role="button" (click)="onLogoutHandler()">
+        Logout
       </button>
     </div>
     <div class="hamburger-icon" (click)="popMenu()">

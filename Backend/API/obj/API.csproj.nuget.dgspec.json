@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Big D\\Desktop\\Projekt\\DannesBlogg\\client\\Backend\\API\\API.csproj": {}
+    "C:\\Users\\Big D\\Desktop\\Projekt\\DannesBlogg\\client\\Backend\\API\\API.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Big D\\Desktop\\Projekt\\DannesBlogg\\client\\Backend\\API\\API.csproj": {
+    "C:\\Users\\Big D\\Desktop\\Projekt\\DannesBlogg\\client\\Backend\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Big D\\Desktop\\Projekt\\DannesBlogg\\client\\Backend\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\Big D\\Desktop\\Projekt\\DannesBlogg\\client\\Backend\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "c:\\Users\\Big D\\Desktop\\Projekt\\DannesBlogg\\client\\Backend\\API\\API.csproj",
+        "projectPath": "C:\\Users\\Big D\\Desktop\\Projekt\\DannesBlogg\\client\\Backend\\API\\API.csproj",
         "packagesPath": "C:\\Users\\Big D\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Big D\\Desktop\\Projekt\\DannesBlogg\\client\\Backend\\API\\obj\\",
+        "outputPath": "C:\\Users\\Big D\\Desktop\\Projekt\\DannesBlogg\\client\\Backend\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Big D\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -21,7 +21,8 @@
           "net6.0"
         ],
         "sources": {
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://www.nuget.org/api/v2": {}
         },
         "frameworks": {
           "net6.0": {

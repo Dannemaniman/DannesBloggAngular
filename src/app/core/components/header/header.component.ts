@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core'
+import { Observable } from "rxjs"
+import { User } from "../../models/user"
+import { AccountService } from "../../services/account.service"
 import { HttpService } from "../../services/http.service"
 
 @Component({
@@ -9,9 +12,10 @@ import { HttpService } from "../../services/http.service"
 export class HeaderComponent implements OnInit {
   public showRegisterModal = false;
 
-  constructor(private http: HttpService) { }
+  constructor(public accountService: AccountService) { }
 
   ngOnInit(): void {
+
   }
 
   public toggleRegisterModal() {
@@ -22,9 +26,12 @@ export class HeaderComponent implements OnInit {
     console.log("Open menu clicked.")
   }
 
-  public login(username: HTMLInputElement, password: HTMLInputElement) {
-    this.http.login(username.value, password.value)
-    // console.log(email.value, password.value)
+  public onLoginHandler(username: HTMLInputElement, password: HTMLInputElement) {
+    this.accountService.login(username.value, password.value)
+  }
+
+  public onLogoutHandler() {
+    this.accountService.logout()
   }
 
 }

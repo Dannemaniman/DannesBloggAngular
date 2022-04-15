@@ -105,3 +105,10 @@ C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\obj\Debug\net6.0\A
 C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\obj\Debug\net6.0\ref\API.dll
 C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\obj\Debug\net6.0\API.pdb
 C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\obj\Debug\net6.0\API.genruntimeconfig.cache
+C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Big D\Desktop\Projekt\DannesBlogg\client\Backend\API\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
