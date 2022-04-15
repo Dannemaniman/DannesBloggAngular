@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using API.Data;
+using API.Extensions;
 using API.Interfaces;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -35,25 +36,12 @@ namespace API
     //OCH SÅ KOMMER DOTNET CORE LÖSA.. SKAPANDET AV DESSA CLASSER OCH DESTRUCTION AV DESSA CLASSER NÄR DEM INTE ANVÄNDS LÄNGRE!!
     public void ConfigureServices(IServiceCollection services)
     {
-      //ORDNINGEN SPELAR INGEN ROLL HÄR... MEN DEN GÖR I CONFIGURE METODEN!
-      services.AddDbContext<DataContext>(options =>
-      {
-        options.UseSqlite(_config.GetConnectionString("DefaultConnection")); //Inuti appsettings.development.json så märker jag att, SQLites connection strings är jätteenkla.. bara namnet på filen där vi vill storea databasen..!
-      });
-      services.AddScoped<ITokenService, TokenService>();
+      services.AddApplicationServices(_config);
       services.AddControllers();
       services.AddCors();
-      services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-      .AddJwtBearer(options =>
-      {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-          ValidateIssuerSigningKey = true,
-          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"])),
-          ValidateIssuer = false, //Issuer av är vår API server.. 
-          ValidateAudience = false, //Audience är vår angular app!
-        };
-      });
+      services.AddIdentityServices(_config);
+      //Extension methods ser likadana ut.. vi har en static class som håller våra extensions.. och sen skapar vi static methods där vi specifierar return typen (IServiceCollection i detta fallet).. Och sen specifierar man alltid “this” för typen som jag extendar!
+
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
