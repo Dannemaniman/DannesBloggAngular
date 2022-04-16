@@ -12,7 +12,7 @@ export class AccountService {
   private _currentUserSource = new ReplaySubject<User | null>(1);
   public currentUser$ = this._currentUserSource.asObservable();
 
-  constructor(public http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   public registerUser(registerUser: RegisterUser) {
     // let params = new HttpParams()

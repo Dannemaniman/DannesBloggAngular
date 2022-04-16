@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: "category/:id", component: CategoryPageComponent },
   { path: "category/:id/thread/:id", component: ThreadDetailPageComponent },
   { path: "user-page", component: UserProfilePageComponent },
+  { path: "**", component: HomePageComponent, pathMatch: "full" }
 ]
 
 @NgModule({

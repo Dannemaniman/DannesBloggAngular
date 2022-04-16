@@ -9,6 +9,7 @@ import { HomePageComponent } from './modules/home-page/home-page.component'
 import { CategoryPageComponent } from './modules/category-page/category-page.component'
 import { ThreadDetailPageComponent } from './modules/thread-detail-page/thread-detail-page.component'
 import { UserProfilePageComponent } from './modules/user-profile-page/user-profile-page.component'
+import { ToastrModule } from "ngx-toastr"
 
 @NgModule({
   declarations: [
@@ -22,7 +23,10 @@ import { UserProfilePageComponent } from './modules/user-profile-page/user-profi
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    CoreModule
+    CoreModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
