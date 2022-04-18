@@ -17,6 +17,8 @@ namespace API.Entities
     public string? LastName { get; set; }
     public int? Age { get; set; }
     public string? Email { get; set; }
+    public ICollection<UserThread>? Threads { get; set; }
+    public DateTime? Created { get; set; } = DateTime.Now;
   }
 }
 
