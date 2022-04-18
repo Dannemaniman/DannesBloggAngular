@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Security.Claims;
 using API.Data;
 using API.DTOs;
 using API.Entities;
@@ -48,5 +49,26 @@ public class UsersController : BaseApiController
     if (user == null) return NoContent();
 
     return _mapper.Map<MemberDto>(user);
+  }
+  [HttpPut]
+  [Authorize]
+  public async Task<ActionResult> UpdateUserPassword(MemberUpdateDto memberUpdateDto)
+  {
+    
+    var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if(username == null) return NotFound();
+
+    var user = await _userRepository.GetUserByUsernameAsync(username);
+
+    //NU ÄR USER FLAGGAT ATT UPPDATERAS AV Entity RAMVERKET!
+    //DETTA GARANTERAR ATT.. OAVSETT OM VÅR USER INTE HAR UPPDATERATS.. 
+    //SÅ GENOM ATT LÄGGA TILL DENNA FLAGEN i Update.. SÅ GARANTERAR VI ATT VI INTE FÅR TILLBAKA ETT ERROR ELLER ETT EXCEPTION!
+     _mapper.Map(memberUpdateDto, user);
+
+     _userRepository.Update(user);
+
+     if(await _userRepository.SaveAllAsync()) return NoContent();
+
+     return BadRequest("Failed to update user.");
   }
 }
