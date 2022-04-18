@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core'
+import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core'
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-reply',
@@ -6,8 +7,18 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core'
   styleUrls: ['./reply.component.scss']
 })
 export class ReplyComponent implements OnInit {
-  @Output() toggle: EventEmitter<boolean> = new EventEmitter();
-  @Output() reply: EventEmitter<{ title: string, message: string }> = new EventEmitter();
+  @Output() 
+  toggle: EventEmitter<boolean> = new EventEmitter();
+  @Output() 
+  reply: EventEmitter<{ title: string, message: string }> = new EventEmitter();
+  @ViewChild("form")
+  replyForm!: ElementRef;
+
+  @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any) {
+    /*     if(this.editForm.dirty) {
+          $event.returnValue = true;
+        } */
+  }
 
   constructor() { }
 
@@ -19,7 +30,8 @@ export class ReplyComponent implements OnInit {
     document.body.style.overflow = 'visible'
     this.toggle.emit(false)
   }
-  postReply(title: string, message: string) {
-    this.reply.emit({ title, message })
+  postReply(form: NgForm) {
+    console.log(form)
+    // this.reply.emit({ form, message })
   }
 }
