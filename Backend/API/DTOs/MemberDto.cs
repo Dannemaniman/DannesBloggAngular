@@ -14,6 +14,5 @@ namespace API.DTOs
     public int? Age { get; set; }
     public string? Email { get; set; }
     public ICollection<ThreadDto>? Threads { get; set; }
-    public DateTime? Created { get; set; }
   }
 }

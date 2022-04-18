@@ -11,5 +11,6 @@ namespace API.DTOs
     public int Replies { get; set; }
     public int Views { get; set; }
     public string? Content { get; set; }
+    public DateTime? Created { get; set; }
   }
 }

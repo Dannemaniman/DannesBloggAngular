@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -10,6 +10,9 @@ import { CategoryPageComponent } from './modules/category-page/category-page.com
 import { ThreadDetailPageComponent } from './modules/thread-detail-page/thread-detail-page.component'
 import { UserProfilePageComponent } from './modules/user-profile-page/user-profile-page.component'
 import { ToastrModule } from "ngx-toastr"
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor'
+//VI TAR SEDAN BORT IMPORTS SOM VI INTE ANVÄNDER FÖR MER CLEAN CODE... 
+//DOCK SÅ KOMMER ANGULAR NÄR DEN BUILDAR APPEN ATT ÄNDÅ INTE COMPILEA KOD SOM INTE ANVÄNDS.. 
 
 @NgModule({
   declarations: [
@@ -28,7 +31,9 @@ import { ToastrModule } from "ngx-toastr"
       positionClass: 'toast-bottom-right'
     })
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
