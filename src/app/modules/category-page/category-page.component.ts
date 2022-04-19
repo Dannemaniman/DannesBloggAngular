@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router'
 import { first, last } from 'rxjs'
 import { Category } from 'src/app/core/models/category'
+import { AppService } from 'src/app/core/services/app.service'
 
 @Component({
   selector: 'app-category-page',
@@ -104,8 +105,9 @@ export class CategoryPageComponent implements OnInit {
   ]
 
   public categoryTitle: string = ""
+  public showCreateThread: boolean = false;
 
-  constructor(private route: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private route: Router, private activatedRoute: ActivatedRoute, public appService: AppService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -120,6 +122,11 @@ export class CategoryPageComponent implements OnInit {
 
   public navigateByCategory(categoryCode: string) {
     this.route.navigateByUrl('category/' + categoryCode)
+  }
+
+  public toggleCreateThread() {
+    console.log("clicked")
+    this.showCreateThread = !this.showCreateThread
   }
 
 }

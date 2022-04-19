@@ -175,3 +175,4 @@ C:\Users\danie\Desktop\DannesBlogg\client\Backend\API\obj\Debug\net6.0\API.pdb
 C:\Users\danie\Desktop\DannesBlogg\client\Backend\API\obj\Debug\net6.0\API.genruntimeconfig.cache
 C:\Users\danie\Desktop\DannesBlogg\client\Backend\API\obj\Debug\net6.0\ref\API.dll
 C:\Users\danie\Desktop\DannesBlogg\client\Backend\API\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\danie\Desktop\DannesBlogg\client\Backend\API\bin\Debug\net6.0\Data\App Data\AppData.json

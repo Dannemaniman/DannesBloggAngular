@@ -15,7 +15,7 @@
         <img src="../../../assets/categories_icon.png" />
       </div>
       <ul>
-        <li *ngFor="let category of categories" [routerLink]="'category/' + category.code">
+        <li *ngFor="let category of (appService.categories$ | async)" [routerLink]="'category/' + category.code">
           <p>{{category.title}}</p>
           <p>{{category.threadCount}}</p>
         </li>

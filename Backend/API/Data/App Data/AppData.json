@@ -1,58 +1,57 @@
-{
-	"categories": [{
-			"Title": "All",
-			"threadCount": "22",
-			"code": "f1"
-		},
-		{
-			"title": "Spirituality of Daniel",
-			"threadCount": "1",
-			"code": "f22"
-		},
-		{
-			"title": "Crime",
-			"threadCount": "3",
-			"code": "f3"
-		},
-		{
-			"title": "Philosophy",
-			"threadCount": "4",
-			"code": "f4"
-		},
-		{
-			"title": "Discipline",
-			"threadCount": "2",
-			"code": "f5"
-		},
-		{
-			"title": "Birdwatching",
-			"threadCount": "2",
-			"code": "f6"
-		},
-		{
-			"title": "Technology",
-			"threadCount": "2",
-			"code": "f7"
-		},
-		{
-			"title": "Space",
-			"threadCount": "2",
-			"code": "f8"
-		},
-		{
-			"title": "Beverages",
-			"threadCount": "2",
-			"code": "f9"
-		},
-		{
-			"title": "Tostitos",
-			"threadCount": "2",
-			"code": "f10"
-		},
-		{
-			"title": "Raw Lyrics",
-			"threadCount": "2",
-			"code": "f11"
-		}
-	]
-}
+[
+    {
+        "Title": "All",
+        "ThreadCount": "22",
+        "Code": "f1"
+    },
+    {
+        "Title": "Spirituality of Daniel",
+        "ThreadCount": "1",
+        "Code": "f22"
+    },
+    {
+        "Title": "Crime",
+        "ThreadCount": "3",
+        "Code": "f3"
+    },
+    {
+        "Title": "Philosophy",
+        "ThreadCount": "4",
+        "Code": "f4"
+    },
+    {
+        "Title": "Discipline",
+        "ThreadCount": "2",
+        "Code": "f5"
+    },
+    {
+        "Title": "Birdwatching",
+        "ThreadCount": "2",
+        "Code": "f6"
+    },
+    {
+        "Title": "Technology",
+        "ThreadCount": "2",
+        "Code": "f7"
+    },
+    {
+        "Title": "Space",
+        "ThreadCount": "2",
+        "Code": "f8"
+    },
+    {
+        "Title": "Beverages",
+        "ThreadCount": "2",
+        "Code": "f9"
+    },
+    {
+        "Title": "Tostitos",
+        "ThreadCount": "2",
+        "Code": "f10"
+    },
+    {
+        "Title": "Raw Lyrics",
+        "ThreadCount": "2",
+        "Code": "f11"
+    }
+]

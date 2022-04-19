@@ -4,6 +4,6 @@ namespace API.Interfaces
 {
     public interface IAppService
     {
-        Category[] GetCategories();
+         public object DeserializeFromStream();
     }
 }

@@ -1,4 +1,5 @@
 <div class="home-page__container">
+  <app-reply *ngIf="showCreateThread"></app-reply>
   <section class="page-content__container">
     <aside class="categories__container">
       <div class="categories-title__container">
@@ -6,7 +7,7 @@
         <img src="../../../assets/categories_icon.png" />
       </div>
       <ul>
-        <li *ngFor="let category of categories" [routerLink]="['/category/' + category.code]" routerLinkActive="active-link">
+        <li *ngFor="let category of (appService.categories$ | async)" [routerLink]="['/category/' + category.code]" routerLinkActive="active-link">
           <p>{{category.title}}</p>
           <p>{{category.threadCount}}</p>
         </li>
@@ -15,8 +16,8 @@
     <div class="thread-section__container">
       <h3 style="color: #7B71C2;">{{categoryTitle}}</h3>
       <hr />
-      <div class="thread-section_quotebox">
-        <h2>You gotta give Respect, to get Respect. <span style="color: #7B71C2;">- Daniel Langås</span></h2>
+      <div class="thread-section_quotebox action-buttons__container">
+        <button class="btn btn-light" (click)="toggleCreateThread()">New topic</button>
       </div>
       <div class="threads__container">
         <app-thread-bar *ngFor="let item of data" 
@@ -38,9 +39,9 @@
             <li>15</li>
           </ul>
         </div>
-        <div class="action-buttons__container">
+        <!-- <div class="action-buttons__container">
           <button class="btn btn-light">New topic</button>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>

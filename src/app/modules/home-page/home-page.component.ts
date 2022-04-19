@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http"
 import { Component, OnInit } from '@angular/core'
 import { Observable, throwError } from 'rxjs'
 import { catchError, retry } from 'rxjs/operators'
+import { AppService } from "src/app/core/services/app.service"
 
 @Component({
   selector: 'app-home-page',
@@ -58,10 +59,10 @@ export class HomePageComponent implements OnInit {
 
   public showThreadCreater = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public appService: AppService) { }
 
   ngOnInit(): void {
-    // this.http.get("https://localhost:5001/api/users").subscribe(response => {
+    // this.http.get("https://localhost:5001/api/app/categories").subscribe(response => {
     //   console.log(response)
     // }, error => {
     //   console.log(error)

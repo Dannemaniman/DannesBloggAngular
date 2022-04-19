@@ -27,7 +27,8 @@ export class AppService {
   public getAppCategories() {
     this.http.get<Category[]>(this.baseUrl + '/app/categories').subscribe(categories => {
       if(categories) {
-        return this.categories = categories 
+        console.log(categories)
+         this.categories = categories 
       }
     })
   }

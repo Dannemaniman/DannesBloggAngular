@@ -134,6 +134,20 @@
         text-align: center;
         color: #8A8A8A;
       }
+      .action-buttons__container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 2rem;
+  
+        button {
+          padding-right: 2rem;
+          padding-left: 2rem;
+          background-color: #363637;
+          border: 1px solid rgba($color: grey, $alpha: 0.4);
+          color: #9A98A5;
+        }
+      }
     }
   }
 
@@ -143,26 +157,9 @@
     align-items: center;
     justify-content: center;
 
-    .action-buttons__container {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      margin-top: 2rem;
-
-      button {
-        padding-right: 2rem;
-        padding-left: 2rem;
-        background-color: #363637;
-        border: 1px solid rgba($color: grey, $alpha: 0.4);
-        color: #9A98A5;
-      }
-    }
-
     .pagination-nav__container {
       margin-top: 1rem;
       cursor: pointer;
-
-
 
       ul {
         display: flex;

@@ -26,6 +26,7 @@ namespace API.Extensions
       {
         options.UseSqlite(config.GetConnectionString("DefaultConnection")); //Inuti appsettings.development.json så märker jag att, SQLites connection strings är jätteenkla.. bara namnet på filen där vi vill storea databasen..!
       });
+      services.AddScoped<IAppService, AppService>();
 
       return services;
     }
