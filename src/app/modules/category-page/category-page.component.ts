@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router'
 import { first, last } from 'rxjs'
+import { Category } from 'src/app/core/models/category'
 
 @Component({
   selector: 'app-category-page',
@@ -8,7 +9,7 @@ import { first, last } from 'rxjs'
   styleUrls: ['./category-page.component.scss']
 })
 export class CategoryPageComponent implements OnInit {
-  public data = [
+  public data: Category[] = [
     {
       id: "223",
       title: "Daniel often references the Braille version of the bible. Why?",
@@ -122,3 +123,16 @@ export class CategoryPageComponent implements OnInit {
   }
 
 }
+
+
+//category-route branchen...
+
+//----------FRONTEND------------
+//1. lägg till metod i ny service som heter AppService
+//2. Anropa från både /category/:id och homepagen..
+//----------Backend------------
+//1. Skapa ny Controller vid namn AppController
+//2. Antingen returna direkt där en string..
+//3. Eller anropa en fil som läser in info från en "fil där jag sparar alla hårdkodade värden"
+//
+//
