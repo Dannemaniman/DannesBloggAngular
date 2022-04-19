@@ -1,6 +1,6 @@
 <header class="d-flex">
   <div>
-    <img class="brand-image" src="../../../../assets/D.png" alt="home" />
+    <img class="brand-image" src="../../../../assets/D.png" alt="home" (click)="goHome()"/>
   </div>
   <div class="m-0 d-flex align-items-center header-container">
     <div class="login-container" *ngIf="!(this.accountService.currentUser$ | async)">

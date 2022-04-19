@@ -1,3 +1,5 @@
+using API.Entities;
+
 namespace API.Entities
 {
   /*HAN KALLAR DEN FÖR AppUser.. PGA USER ÄR ETT VÄLDIGT ÖVERANVÄNT NAMN I KOD.. 

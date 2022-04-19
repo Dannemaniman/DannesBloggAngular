@@ -21,6 +21,7 @@ namespace API.Helpers
         .ForMember(dest => dest.Threads, opt => opt.MapFrom(src =>
           src.Threads.Any()));
       CreateMap<UserThread, ThreadDto>();
+      CreateMap<MemberUpdateDto, AppUser>();
     }
     //OM AUTOMAPPER TRÄFFAR EN METOD/PROPERTY MED NAMNET Get FÖRE.. SÅ KOMMER DEN KÖRA FUNKTIONEN OCH SÄTTA RETURNVÄRDET TILL AGE! IFALL BÄGGE ÄR INT!
     //Vi injectar denna som en dependency.. så vi lägger till den till application services extension!

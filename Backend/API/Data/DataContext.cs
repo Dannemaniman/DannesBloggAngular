@@ -15,5 +15,6 @@ namespace API.Data
     }
 
     public DbSet<AppUser> Users { get; set; } //Nästa steg är att lägga till min DbContext till min Startup Configuration start up class.. så vi kan injecta datacontext in i andra delar av min app..!
+    public DbSet<UserThread> UserThreads { get; set; } //Nästa steg är att lägga till min DbContext till min Startup Configuration start up class.. så vi kan injecta datacontext in i andra delar av min app..!
   }
 }

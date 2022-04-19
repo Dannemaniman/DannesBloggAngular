@@ -6,21 +6,25 @@
         <img src="../../../assets/categories_icon.png" />
       </div>
       <ul>
-        <li *ngFor="let category of categories">
+        <li *ngFor="let category of categories" [routerLink]="['/category/' + category.code]" routerLinkActive="active-link">
           <p>{{category.title}}</p>
           <p>{{category.threadCount}}</p>
         </li>
       </ul>
     </aside>
     <div class="thread-section__container">
-      <h3 style="color: #7B71C2;">Philosophy</h3>
+      <h3 style="color: #7B71C2;">{{categoryTitle}}</h3>
       <hr />
       <div class="thread-section_quotebox">
         <h2>You gotta give Respect, to get Respect. <span style="color: #7B71C2;">- Daniel Langås</span></h2>
       </div>
       <div class="threads__container">
-        <app-thread-bar *ngFor="let item of data" [title]="item.title" [author]="item.author" [replies]="item.replies"
-          [views]="item.views">
+        <app-thread-bar *ngFor="let item of data" 
+          [title]="item.title" 
+          [author]="item.author" 
+          [replies]="item.replies"
+          [views]="item.views"
+          [routerLink]="['thread/', item.id]">
         </app-thread-bar>
       </div>
       <div class="control__container">

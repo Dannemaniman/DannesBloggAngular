@@ -5,7 +5,7 @@
     </div>
   </section>
   <div class="action-buttons__container">
-    <button class="btn btn-light">New topic</button>
+    <button class="btn btn-light" (click)="toggleCreateThread()">New topic</button>
     <button class="btn btn-light">Go to Forum</button>
   </div>
   <section class="page-content__container">
@@ -15,7 +15,7 @@
         <img src="../../../assets/categories_icon.png" />
       </div>
       <ul>
-        <li *ngFor="let category of categories">
+        <li *ngFor="let category of categories" [routerLink]="'category/' + category.code">
           <p>{{category.title}}</p>
           <p>{{category.threadCount}}</p>
         </li>
@@ -34,4 +34,5 @@
       </div>
     </div>
   </section>
+  <app-reply *ngIf="showThreadCreater"></app-reply>
 </div>

@@ -49,21 +49,26 @@ export class HomePageComponent implements OnInit {
   ]
 
   public categories = [
-    { title: "All", threadCount: "10" },
-    { title: "Spirituality of Daniel", threadCount: "1" },
-    { title: "Crime", threadCount: "3" },
-    { title: "Philosophy", threadCount: "4" },
-    { title: "Discipline", threadCount: "2" },
+    { title: "All", threadCount: "10", code: 'f1' },
+    { title: "Spirituality of Daniel", threadCount: "1", code: 'f2' },
+    { title: "Crime", threadCount: "3", code: 'f3' },
+    { title: "Philosophy", threadCount: "4", code: 'f4' },
+    { title: "Discipline", threadCount: "2", code: 'f5' },
   ]
+
+  public showThreadCreater = false;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get("https://localhost:5001/api/users").subscribe(response => {
-      console.log(response)
-    }, error => {
-      console.log(error)
-    })
+    // this.http.get("https://localhost:5001/api/users").subscribe(response => {
+    //   console.log(response)
+    // }, error => {
+    //   console.log(error)
+    // })
   }
 
+  public toggleCreateThread() {
+    this.showThreadCreater = !this.showThreadCreater
+  }
 }

@@ -93,6 +93,14 @@
           }
         }
       }
+      .active-link {
+        border-top: 1px solid #7B71C2;
+        border-bottom: 1px solid #7B71C2;
+      
+        p {
+          color: #7B71C2;
+        }
+      }
     }
   }
 

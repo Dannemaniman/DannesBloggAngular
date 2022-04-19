@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
 import { Observable } from "rxjs"
 import { User } from "../../models/user"
 import { AccountService } from "../../services/account.service"
@@ -12,7 +13,7 @@ import { HttpService } from "../../services/http.service"
 export class HeaderComponent implements OnInit {
   public showRegisterModal = false;
 
-  constructor(public accountService: AccountService) { }
+  constructor(public accountService: AccountService, private route: Router) { }
 
   ngOnInit(): void {
 
@@ -32,6 +33,10 @@ export class HeaderComponent implements OnInit {
 
   public onLogoutHandler() {
     this.accountService.logout()
+  }
+
+  public goHome() {
+    this.route.navigateByUrl("/")
   }
 
 }
