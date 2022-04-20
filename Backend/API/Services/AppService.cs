@@ -12,9 +12,9 @@ namespace API.Services
 
     public object DeserializeFromStream()
     {
-            string fileName = @"C:\Users\danie\Desktop\DannesBlogg\client\Backend\API\Data\App Data\AppData.json";
+            string fileName = @"C:\Users\danie\Desktop\DannesBlogg\client\Backend\API\Data\AppData\AppData.json";
             string jsonString = File.ReadAllText(fileName);
-            Console.WriteLine($"Date: {jsonString}");
+            
             var categories = JsonSerializer.Deserialize<List<Category>>(jsonString)!;
             
             return categories;

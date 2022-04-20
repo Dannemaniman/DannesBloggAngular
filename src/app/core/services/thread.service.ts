@@ -28,10 +28,14 @@ export class ThreadService {
   constructor(
     private http: HttpClient, 
     private appService: AppService,
-    private router: Router) { }
+    private router: Router) {
+      this.getThreadsByCategory()
+     }
 
-  public getThreads() {
-    this.http.get<Thread[]>(this.baseUrl + '/threads').subscribe(threads => {
+  public getThreadsByCategory() {
+    const categoryId = this.appService.categoryId
+    this.http.get<Thread[]>(this.baseUrl + '/thread/category/' + categoryId).subscribe(threads => {
+      console.log(threads)
       if(threads) {
         this.threads = threads
       }
@@ -39,7 +43,6 @@ export class ThreadService {
   }
 
   public getThread(threadId: string) {
-    // const params = new HttpParams({fromString: threadId});
     return this.http.get<Thread>(this.baseUrl + '/thread/' + threadId)
   }
 
@@ -48,7 +51,6 @@ export class ThreadService {
 
     this.http.post<Thread>(this.baseUrl + '/thread', {title, content, categoryId})
     .subscribe(thread => {
-      console.log(thread)
       this.router.navigateByUrl(`/category/${thread.categoryId}/thread/${thread.id}`)
     })
   }

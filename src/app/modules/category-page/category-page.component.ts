@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
+import { Subscription } from 'rxjs'
 import { Category } from 'src/app/core/models/category'
 import { AppService } from 'src/app/core/services/app.service'
 import { ThreadService } from 'src/app/core/services/thread.service'
@@ -117,6 +118,7 @@ export class CategoryPageComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       const categoryId = params['id']
       const foundCategory = this.categories.find(category => category.code === categoryId)
+      this.threadService.getThreadsByCategory()
   
       if(foundCategory) {
         this.categoryTitle = foundCategory?.title

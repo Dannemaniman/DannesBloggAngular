@@ -68,8 +68,20 @@ namespace API.Controllers
       };
 
       return Ok(returnThread);
-      
     }
+
+    [Route("category/{categoryId}")]
+    [HttpGet]
+    // [Authorize]
+    public async Task<IEnumerable<UserThread>> getThreadsByCategoryId(string categoryId)
+    {
+      var hej = categoryId;
+
+      return await _threadRepository.GetThreadsByCategoryIdAsync(categoryId);
+    }
+
+
+
     public async Task<AppUser> GetUser(string username) 
     {
       var user = await _userRepository.GetUserByUsernameAsync(username);

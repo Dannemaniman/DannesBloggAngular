@@ -19,7 +19,8 @@ namespace API.Controllers
       _userRepository = userRepository;
     }
 
-    [HttpGet("categories")]
+    [Route("categories")]
+    [HttpGet]
     [AllowAnonymous]
     public ActionResult<List<Category>> getCategories()
     {
