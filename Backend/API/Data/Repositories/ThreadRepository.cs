@@ -23,7 +23,7 @@ namespace API.Data.Repositories
        return _mapper.Map<ReturnThread>(thread);
     }
 
-    public async Task<IEnumerable<UserThread>> GetThreadFromUserAsync(AppUser user)
+    public async Task<IEnumerable<UserThread>> GetThreadsFromUserAsync(AppUser user)
     {
       return await _context.UserThreads
         .Where<UserThread>(thread => thread.User == user)
