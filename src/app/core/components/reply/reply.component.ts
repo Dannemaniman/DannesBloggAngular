@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core'
-import { NgForm } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core'
+import { NgForm, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-reply',
@@ -8,11 +8,14 @@ import { NgForm } from '@angular/forms';
 })
 export class ReplyComponent implements OnInit {
   @Output() 
-  toggle: EventEmitter<boolean> = new EventEmitter();
+  toggleWindow: EventEmitter<boolean> = new EventEmitter();
   @Output() 
-  reply: EventEmitter<{ title: string, message: string }> = new EventEmitter();
+  createThread: EventEmitter<{ title: string, content: string }> = new EventEmitter();
   @ViewChild("form")
-  replyForm!: ElementRef;
+  replyForm!: NgForm;
+
+  @Input('title') modalTitle: string = '';
+  @Input() buttonTitle: string = '';
 
   @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any) {
     /*     if(this.editForm.dirty) {
@@ -28,10 +31,15 @@ export class ReplyComponent implements OnInit {
 
   toggleReplying() {
     document.body.style.overflow = 'visible'
-    this.toggle.emit(false)
+    this.toggleWindow.emit(false)
   }
-  postReply(form: NgForm) {
-    console.log(form)
-    // this.reply.emit({ form, message })
+  postReply(title: NgModel, content: NgModel) {
+    const titleValue = title.control.value
+    const messageValue = content.control.value
+    console.log("hej")
+    console.log(titleValue)
+    console.log(messageValue)
+    this.toggleReplying()
+    this.createThread.emit({ title: title.control.value, content: content.control.value })
   }
 }

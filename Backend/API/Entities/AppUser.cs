@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using API.Entities;
 
 namespace API.Entities
@@ -19,8 +20,9 @@ namespace API.Entities
     public string? LastName { get; set; }
     public int? Age { get; set; }
     public string? Email { get; set; }
+    public DateTime WasCreated { get; set; } = DateTime.UtcNow;
+    public DateTime WasModified { get; set; } = DateTime.UtcNow;
     public ICollection<UserThread>? Threads { get; set; }
-    public DateTime? Created { get; set; } = DateTime.Now;
   }
 }
 

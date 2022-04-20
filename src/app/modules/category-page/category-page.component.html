@@ -1,5 +1,9 @@
 <div class="home-page__container">
-  <app-reply *ngIf="showCreateThread"></app-reply>
+  <app-reply *ngIf="showCreateThread"
+  [title]="'Create new Thread'" 
+  [buttonTitle]="'Post'"
+  (toggleWindow)="toggleCreateThread()"
+  (createThread)="onCreateThread($event)" ></app-reply>
   <section class="page-content__container">
     <aside class="categories__container">
       <div class="categories-title__container">
@@ -20,7 +24,7 @@
         <button class="btn btn-light" (click)="toggleCreateThread()">New topic</button>
       </div>
       <div class="threads__container">
-        <app-thread-bar *ngFor="let item of data" 
+        <app-thread-bar *ngFor="let item of threadService.threads$ | async" 
           [title]="item.title" 
           [author]="item.author" 
           [replies]="item.replies"

@@ -27,6 +27,8 @@ namespace API.Controllers
 
         if(jsonData == null) return NotFound();
 
+        Console.WriteLine($"{jsonData}");
+
         return Ok(jsonData);
     }
   }

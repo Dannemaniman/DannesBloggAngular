@@ -16,9 +16,7 @@ namespace API.Services
             string jsonString = File.ReadAllText(fileName);
             Console.WriteLine($"Date: {jsonString}");
             var categories = JsonSerializer.Deserialize<List<Category>>(jsonString)!;
-
-            // Console.WriteLine($"Date: {categories[0].Code}");
- 
+            
             return categories;
     }
   }

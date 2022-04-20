@@ -1,39 +1,39 @@
 <div class="thread-page__content">
   <div class="thread__container">
     <div class="thread-panel">
-      <h2>{{thread.title}}</h2>
+      <h2>{{thread?.title}}</h2>
       <button role="button" class="btn btn-light" (click)="toggleReplying()">Reply</button>
     </div>
     <div class="thread-content">
-      <p>{{thread.content}}</p>
+      <p>{{thread?.content}}</p>
     </div>
     <div class="thread-footer">
       <div class="thread-footer__stats">
-        <p>Replies: {{thread.replies}}</p>
-        <p>Views: {{thread.views}}</p>
-        <p>By: <span style="color: #7B71C2;">{{thread.author}}</span></p>
+        <p>Replies: {{thread?.replies}}</p>
+        <p>Views: {{thread?.views}}</p>
+        <p>By: <span style="color: #7B71C2;">{{thread?.author}}</span></p>
       </div>
-      <p class="thread-footer__written">Written: {{thread.date}}</p>
+      <p class="thread-footer__written">Written: {{thread?.wasCreated}}</p>
     </div>
   </div>
 
   <div class="reply__container">
     <div class="reply-panel">
-      <p>Title: <span>{{reply.title}}</span></p>
-      <p>From: <span>{{reply.author}}</span></p>
+      <p>Title: <span>{{reply?.title}}</span></p>
+      <p>From: <span>{{reply?.author}}</span></p>
       <!-- <p>Written: <span>{{reply.date}}</span></p> -->
     </div>
     <div class="reply-content">
-      <p>{{thread.content}}</p>
+      <p>{{thread?.content}}</p>
     </div>
     <div class="reply-footer">
       <button role="button" class="btn btn-light" (click)="toggleReplying()">Reply</button>
       <div class="thread-footer__stats">
-        <p>Replies: {{thread.replies}}</p>
-        <p>Views: {{thread.views}}</p>
-        <p>By: {{thread.author}}</p>
+        <p>Replies: {{thread?.replies}}</p>
+        <p>Views: {{thread?.views}}</p>
+        <p>By: {{thread?.author}}</p>
       </div>
-      <p class="reply-footer__written">Written: {{thread.date}}</p>
+      <p class="reply-footer__written">Written: {{thread?.date}}</p>
     </div>
   </div>
   <app-reply *ngIf="toggleReply" (toggle)="toggleReplying()"></app-reply>

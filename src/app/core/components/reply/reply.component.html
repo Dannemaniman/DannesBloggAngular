@@ -1,8 +1,32 @@
 <div class="backdrop" (click)="toggleReplying()"></div>
 <div class="reply__container">
-  <form (onSubmit)="postReply(form)" #form="ngForm">
-    <input type="text" placeholder="Title..." #title />
-    <textarea type="text" placeholder="Message..." #message></textarea>
-    <button type="button" role="button">Reply</button>
+  <h1>{{modalTitle}}</h1>
+  <form (ngSubmit)="postReply(title, content)" #form="ngForm">
+    <div>
+      <div>
+        <label for="title">Title</label>
+        <input 
+          type="text" 
+          placeholder="Title..." 
+          #title="ngModel" 
+          id="title" 
+          ngModel 
+          name="title"
+          required/>
+      </div>
+      <div> 
+        <label for="content">Content</label> 
+        <textarea 
+          type="text" 
+          placeholder="Message..." 
+          #content="ngModel" 
+          id="content" 
+          ngModel 
+          name="content"
+          required>
+        </textarea>
+      </div>  
+      <button [disabled]="!form.valid" type="submit">{{buttonTitle}}</button>
+    </div>
   </form>
 </div>

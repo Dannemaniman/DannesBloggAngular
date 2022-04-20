@@ -114,8 +114,9 @@
     .thread-section__container {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      // justify-content: center;
       width: 100%;
+      height: 100%;
 
       h3 {
         margin-bottom: 0;

@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220420213504_UpdatedCreatedAgainagainaadwawdawdawdawdawdawd")]
+    partial class UpdatedCreatedAgainagainaadwawdawdawdawdawdawd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.2");
@@ -26,6 +28,9 @@ namespace API.Data.Migrations
                     b.Property<int?>("Age")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
@@ -35,6 +40,9 @@ namespace API.Data.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("TEXT");
+
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("BLOB");
 
@@ -42,12 +50,6 @@ namespace API.Data.Migrations
                         .HasColumnType("BLOB");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("WasCreated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("WasModified")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -67,6 +69,12 @@ namespace API.Data.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Replies")
                         .HasColumnType("INTEGER");
 
@@ -78,12 +86,6 @@ namespace API.Data.Migrations
 
                     b.Property<int>("Views")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("WasCreated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("WasModified")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

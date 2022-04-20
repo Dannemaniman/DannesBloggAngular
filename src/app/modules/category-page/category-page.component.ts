@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router'
-import { first, last } from 'rxjs'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Category } from 'src/app/core/models/category'
 import { AppService } from 'src/app/core/services/app.service'
+import { ThreadService } from 'src/app/core/services/thread.service'
 
 @Component({
   selector: 'app-category-page',
@@ -91,7 +91,7 @@ export class CategoryPageComponent implements OnInit {
   ]
 
   public categories = [
-    { title: "All", threadCount: "22", code: 'f1' },
+    { title: "All", threadCount: "2", code: 'f1' },
     { title: "Spirituality of Daniel", threadCount: "1", code: 'f2' },
     { title: "Crime", threadCount: "3", code: 'f3' },
     { title: "Philosophy", threadCount: "4", code: 'f4' },
@@ -107,7 +107,11 @@ export class CategoryPageComponent implements OnInit {
   public categoryTitle: string = ""
   public showCreateThread: boolean = false;
 
-  constructor(private route: Router, private activatedRoute: ActivatedRoute, public appService: AppService) { }
+  constructor(
+    private route: Router, 
+    private activatedRoute: ActivatedRoute, 
+    public appService: AppService,
+    public threadService: ThreadService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -125,8 +129,12 @@ export class CategoryPageComponent implements OnInit {
   }
 
   public toggleCreateThread() {
-    console.log("clicked")
     this.showCreateThread = !this.showCreateThread
+  }
+
+  public onCreateThread(threadData: {title: string, content: string}) {
+    console.log(threadData)
+    this.threadService.createNewThread(threadData.title, threadData.content) 
   }
 
 }

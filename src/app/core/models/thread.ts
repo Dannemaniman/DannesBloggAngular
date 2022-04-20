@@ -3,10 +3,7 @@ export interface Thread {
     replies: number
     views: number
     content: string
-    firstName: string
-    lastName: string
-    age: number
     email: string
-    threads: Thread
     created: Date
+    categoryId: string
 }
