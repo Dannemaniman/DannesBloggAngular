@@ -16,7 +16,6 @@ export class AccountService {
   constructor(private http: HttpClient) { }
 
   public registerUser(registerUser: RegisterUser) {
-    // let params = new HttpParams()
     this.http.post(`${this.ROOT_URL}/account/register`, registerUser)
       .subscribe(response => console.log(response))
   }
@@ -25,16 +24,13 @@ export class AccountService {
     const user = { UserName, Password }
 
     this.http.post<User>(`${this.ROOT_URL}/account/login`, user)
-      .subscribe(
-        response => {
+      .subscribe(response => {
           const user = response
 
           if (user) {
             localStorage.setItem("user", JSON.stringify(user))
             this.setCurrentUser(user)
           }
-        }, error => {
-          console.log(error)
         })
   }
 
