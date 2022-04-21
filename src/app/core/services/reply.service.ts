@@ -35,24 +35,15 @@ export class ReplyService {
   }
 
   public getRepliesByThreadId(threadId: string) {
-    const categoryId = this.appService.categoryId
     this.http.get<Reply[]>(this.baseUrl + '/reply/thread/' + threadId).subscribe(replies => {
       if(replies) {
         this.replies = replies
       }
     })
-  }
+  } 
 
-  public getReplies(threadId: string) {
-    return this.http.get<Reply>(this.baseUrl + '/thread/' + threadId)
-  }
-
-  public createNewThread(title: string, content: string) {
-    const categoryId = this.appService.categoryId
-
-    this.http.post<Reply>(this.baseUrl + '/thread', {title, content, categoryId})
-    .subscribe(thread => {
-      this.router.navigateByUrl(`/category/${thread.categoryId}/thread/${thread.id}`)
-    })
+  public createNewReply(title: string, content: string, threadId: number) {
+    this.http.post<Reply>(this.baseUrl + '/reply', {title, content, threadId})
+      .subscribe(reply => console.log(reply))
   }
 }

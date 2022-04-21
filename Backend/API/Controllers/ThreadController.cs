@@ -57,10 +57,11 @@ namespace API.Controllers
         Title = newThread.Title,
         Content = newThread.Content,
         CategoryId = newThread.CategoryId,
-        Replies = newThread.Replies,
-        Views = newThread.Views,
+        RepliesCount = newThread.RepliesCount,
+        ViewsCount = newThread.ViewsCount,
         UserName = newThread.User.UserName,
         Email = newThread.User.Email,
+        Replies = newThread.Replies,
         WasCreated = newThread.WasCreated
       };
 

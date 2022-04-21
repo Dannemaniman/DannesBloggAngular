@@ -29,12 +29,12 @@ export class ThreadService {
     private http: HttpClient, 
     private appService: AppService,
     private router: Router) {
-      this.getThreadsByCategory()
+      // this.getThreadsByCategory()
      }
 
   public getThreadsByCategory() {
     const categoryId = this.appService.categoryId
-    this.http.get<Thread[]>(this.baseUrl + '/thread/category' + categoryId).subscribe(threads => {
+    this.http.get<Thread[]>(this.baseUrl + '/thread/category/' + categoryId).subscribe(threads => {
       if(threads) {
         this.threads = threads
       }

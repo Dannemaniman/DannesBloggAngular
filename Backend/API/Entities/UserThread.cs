@@ -14,8 +14,9 @@ namespace API.Entities
     public string? Title { get; set; }
     public string? Content { get; set; }
     public string? CategoryId { get; set; }
-    public int Replies { get; set; } = 0;
-    public int Views { get; set; } = 0;
+    public int RepliesCount { get; set; } = 0;
+    public int ViewsCount { get; set; } = 0;
+    public ICollection<UserReply>? Replies { get; set; }
     public AppUser? User { get; set; }
   }
 }

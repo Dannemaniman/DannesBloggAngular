@@ -23,6 +23,7 @@ namespace API.Helpers
       CreateMap<ThreadDto, UserThread>();
       CreateMap<MemberUpdateDto, AppUser>();
       CreateMap<UserThread, ReturnThread>();
+      CreateMap<ReplyDto, UserReply>();
     }
     //OM AUTOMAPPER TRÄFFAR EN METOD/PROPERTY MED NAMNET Get FÖRE.. SÅ KOMMER DEN KÖRA FUNKTIONEN OCH SÄTTA RETURNVÄRDET TILL AGE! IFALL BÄGGE ÄR INT!
     //Vi injectar denna som en dependency.. så vi lägger till den till application services extension!

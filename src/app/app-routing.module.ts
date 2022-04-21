@@ -7,8 +7,8 @@ import { UserProfilePageComponent } from "./modules/user-profile-page/user-profi
 
 const routes: Routes = [
   { path: "", component: HomePageComponent, pathMatch: 'full' },
-  { path: "category/:id", component: CategoryPageComponent },
-  { path: "category/:id/thread/:id", component: ThreadDetailPageComponent },
+  { path: "category/:categoryId", component: CategoryPageComponent },
+  { path: "category/:categoryId/thread/:threadId", component: ThreadDetailPageComponent },
   { path: "user-page", component: UserProfilePageComponent },
   { path: "**", component: HomePageComponent, pathMatch: "full" }
 ]

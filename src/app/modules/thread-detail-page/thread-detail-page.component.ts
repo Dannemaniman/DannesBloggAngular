@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Reply } from 'src/app/core/models/reply';
+import { ReplyService } from 'src/app/core/services/reply.service';
 import { ThreadService } from 'src/app/core/services/thread.service';
 
 @Component({
@@ -32,12 +34,12 @@ export class ThreadDetailPageComponent implements OnInit, OnDestroy {
 
   public toggleReply: boolean = false;
 
-  constructor(private threadService: ThreadService, private route: ActivatedRoute) { }
+  constructor(private replyService: ReplyService, private threadService: ThreadService, private route: ActivatedRoute) { }
 
   public ngOnInit(): void {
-    this.route.params.subscribe(param => {
+    this.route.params.subscribe(params => {
       this.subscription.push(
-        this.threadService.getThread(param['id']).subscribe(response => {
+        this.threadService.getThread(params['threadId']).subscribe(response => {
           console.log(response)
           this.thread = response
         })
@@ -55,7 +57,11 @@ export class ThreadDetailPageComponent implements OnInit, OnDestroy {
     console.log("clicked toggleEditThread!");
   }
 
-  public toggleReplying(data?: any) {
+  public onValuesEmitted(title: string, content: string) {
+    this.replyService.createNewReply(title, content, this.thread.id)
+  }
+
+  public onToggleCreateWindow(data?: any) {
     console.log(data);
     
     this.toggleReply = !this.toggleReply

@@ -23,6 +23,7 @@ namespace API.Entities
     public DateTime WasCreated { get; set; } = DateTime.UtcNow;
     public DateTime WasModified { get; set; } = DateTime.UtcNow;
     public ICollection<UserThread>? Threads { get; set; }
+    public ICollection<UserReply>? Replies { get; set; }
   }
 }
 

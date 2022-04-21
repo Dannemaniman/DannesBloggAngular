@@ -19,6 +19,7 @@ namespace API.Extensions
       services.AddScoped<ITokenService, TokenService>();
       services.AddScoped<IUserRepository, UserRepository>();
       services.AddScoped<IThreadRepository, ThreadRepository>();
+      services.AddScoped<IReplyRepository, ReplyRepository>();
       //Sen måste vi säga åt den var profilesen ligger i vårt projekt.. Men vi har bara ett projekt.. 
       //så vi har bara en assembly av var dessa kan skapas.. det vi måste skapa på insidan.. är typeof.. och sedan identifiera AutoMapper profile classen vi skapat..:
       //Detta är nog för att AutoMappern ska gå och hitta dessa profiles.. som vi skapat inuti dessa klasserna! (CreateMap)!

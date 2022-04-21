@@ -127,8 +127,10 @@
 
       button {
         height: 2.5rem;
-        width: 5rem;
+        width: 100%;
+        max-width: 8rem;
         margin-left: 3rem;
+        margin-right: 6rem;
       }
 
       .reply-footer__written {
@@ -156,4 +158,9 @@
       }
     }
   }
+}
+
+.reply-button {
+  font-size: 1.7rem;
+  width: 7rem;
 }

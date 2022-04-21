@@ -14,20 +14,17 @@ namespace API.Controllers
     private readonly IThreadRepository _threadRepository;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
-    private readonly IAppService _appService;
 
     public ReplyController(
         IUserRepository userRepository,
         IReplyRepository replyRepository, 
         IThreadRepository threadRepository, 
-        IMapper mapper, 
-        IAppService appService)
+        IMapper mapper)
     {
       _replyRepository = replyRepository;
       _threadRepository = threadRepository;
-      _mapper = mapper;
-      _appService = appService;
       _userRepository = userRepository;
+      _mapper = mapper;
     }
 
     [HttpGet("{replyId}")]
@@ -37,11 +34,10 @@ namespace API.Controllers
       return await _replyRepository.GetReplyByIdAsync(Int32.Parse(replyId));
     }
 
-    [HttpPost]
+    [HttpPost()]
     [Authorize]
     public async Task<ActionResult<UserReply>> createNewReply(ReplyDto replyDto)
     {
-
         var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (username == null) return null;
@@ -58,7 +54,7 @@ namespace API.Controllers
 
         _replyRepository.Add(newReply);
 
-        if(await _threadRepository.SaveAllAsync() == false) return Problem();
+        if(await _replyRepository.SaveAllAsync() == false) return Problem();
 
         // var returnThread = new ReturnThread
         // {

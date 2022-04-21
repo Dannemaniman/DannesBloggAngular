@@ -43,7 +43,8 @@ namespace API.Controllers
         Email = registerDto.Email,
         UserName = registerDto.UserName.ToLower(),
         PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-        PasswordSalt = hmac.Key
+        PasswordSalt = hmac.Key,
+        Threads = null
       };
 
       _context.Users?.Add(user);

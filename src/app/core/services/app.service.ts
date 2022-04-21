@@ -11,10 +11,7 @@ import { Category } from '../models/category';
 export class AppService {
   private _categories$: any = new BehaviorSubject([]);
   private baseUrl = environment.apiUrl
-
-  public get categoryId() {
-    return this.route.url.slice(-2);
-  }
+  public categoryId: any;
 
   public get categories$() {
     return this._categories$.asObservable();
@@ -29,15 +26,15 @@ export class AppService {
   }
 
 
-  constructor(private http: HttpClient, private route: Router) { 
-  }
+  constructor(private http: HttpClient) { }
 
   public getAppCategories() {
-    this.http.get<Category[]>(this.baseUrl + '/app/categories').subscribe(categories => {
-      if(categories) {
-         this.categories = categories 
-      }
-    })
+    this.http.get<Category[]>(this.baseUrl + '/app/categories')
+      .subscribe(categories => {
+        if(categories) {
+          this.categories = categories 
+        }
+      })
   }
   
   public getFavoriteIdFromUrl() {

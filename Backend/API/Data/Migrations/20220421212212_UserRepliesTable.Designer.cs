@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220421212212_UserRepliesTable")]
+    partial class UserRepliesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.2");
@@ -100,7 +102,10 @@ namespace API.Data.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("RepliesCount")
+                    b.Property<int>("Replies")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ThreadId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
@@ -109,7 +114,7 @@ namespace API.Data.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ViewsCount")
+                    b.Property<int>("Views")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("WasCreated")
@@ -120,6 +125,8 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ThreadId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("UserThreads");
@@ -128,11 +135,11 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.UserReply", b =>
                 {
                     b.HasOne("API.Entities.UserThread", "Thread")
-                        .WithMany("Replies")
+                        .WithMany()
                         .HasForeignKey("ThreadId");
 
                     b.HasOne("API.Entities.AppUser", "User")
-                        .WithMany("Replies")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Thread");
@@ -142,23 +149,22 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.UserThread", b =>
                 {
+                    b.HasOne("API.Entities.UserThread", "Thread")
+                        .WithMany()
+                        .HasForeignKey("ThreadId");
+
                     b.HasOne("API.Entities.AppUser", "User")
                         .WithMany("Threads")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Thread");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
-                    b.Navigation("Replies");
-
                     b.Navigation("Threads");
-                });
-
-            modelBuilder.Entity("API.Entities.UserThread", b =>
-                {
-                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }

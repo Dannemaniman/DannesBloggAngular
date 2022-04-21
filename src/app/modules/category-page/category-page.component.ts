@@ -116,7 +116,9 @@ export class CategoryPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      const categoryId = params['id']
+      console.log(params)
+      const categoryId = params['categoryId']
+      this.appService.categoryId = categoryId
       const foundCategory = this.categories.find(category => category.code === categoryId)
       this.threadService.getThreadsByCategory()
   
@@ -140,16 +142,3 @@ export class CategoryPageComponent implements OnInit {
   }
 
 }
-
-
-//category-route branchen...
-
-//----------FRONTEND------------
-//1. lägg till metod i ny service som heter AppService
-//2. Anropa från både /category/:id och homepagen..
-//----------Backend------------
-//1. Skapa ny Controller vid namn AppController
-//2. Antingen returna direkt där en string..
-//3. Eller anropa en fil som läser in info från en "fil där jag sparar alla hårdkodade värden"
-//
-//

@@ -2,21 +2,21 @@
   <div class="thread__container">
     <div class="thread-panel">
       <h2>{{thread?.title}}</h2>
-      <button role="button" class="btn btn-light" (click)="toggleReplying()">Reply</button>
+      <button role="button" class="btn btn-light" (click)="toggleEditThread()">Edit</button>
     </div>
     <div class="thread-content">
       <p>{{thread?.content}}</p>
     </div>
     <div class="thread-footer">
       <div class="thread-footer__stats">
-        <p>Replies: {{thread?.replies}}</p>
-        <p>Views: {{thread?.views}}</p>
-        <p>By: <span style="color: #7B71C2;">{{thread?.email}}</span></p>
+        <p>Replies: {{thread?.repliesCount}}</p>
+        <p>Views: {{thread?.viewsCount}}</p>
+        <p>By: <span style="color: #7B71C2;">{{thread?.userName}} | {{thread?.email}}</span></p>
       </div>
       <p class="thread-footer__written">Written: {{thread?.wasCreated}}</p>
     </div>
   </div>
-  <button role="button" class="btn btn-light m-3" (click)="toggleReplying()">Reply</button>
+  <button role="button" class="btn btn-light m-3 reply-button" (click)="onToggleCreateWindow()">Reply</button>
   <div class="reply__container">
     <div class="reply-panel">
       <p>Title: <span>{{reply?.title}}</span></p>
@@ -27,7 +27,7 @@
       <p>{{reply?.content}}</p>
     </div>
     <div class="reply-footer">
-      <button role="button" class="btn btn-light" (click)="toggleReplying()">Reply</button>
+      <button role="button" class="btn btn-light" (click)="onToggleCreateWindow()">Reply to User</button>
       <div class="thread-footer__stats">
         <!-- <p>Replies: {{thread?.replies}}</p>
         <p>Views: {{thread?.views}}</p> -->
@@ -36,5 +36,10 @@
       <p class="reply-footer__written">Written: {{reply?.wasCreated}}</p>
     </div>
   </div>
-  <app-reply *ngIf="toggleReply" (toggle)="toggleReplying()"></app-reply>
+  <app-reply *ngIf="toggleReply" 
+    title="Reply"
+    buttonTitle="Send"
+    (emitValues)="onValuesEmitted($event.title, $event.content)" 
+    (toggleWindow)="onToggleCreateWindow()">
+  </app-reply>
 </div>

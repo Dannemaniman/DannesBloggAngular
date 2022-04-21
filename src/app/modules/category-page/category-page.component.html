@@ -3,7 +3,7 @@
   [title]="'Create new Thread'" 
   [buttonTitle]="'Post'"
   (toggleWindow)="toggleCreateThread()"
-  (createThread)="onCreateThread($event)" ></app-reply>
+  (emitValues)="onCreateThread($event)" ></app-reply>
   <section class="page-content__container">
     <aside class="categories__container">
       <div class="categories-title__container">

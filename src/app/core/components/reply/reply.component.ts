@@ -11,7 +11,7 @@ export class ReplyComponent implements OnInit {
   @Output() 
   toggleWindow: EventEmitter<boolean> = new EventEmitter();
   @Output() 
-  emitValues: EventEmitter<Reply> = new EventEmitter();
+  emitValues: EventEmitter<{title: string, content: string }> = new EventEmitter();
   @ViewChild("form")
   replyForm!: NgForm;
 

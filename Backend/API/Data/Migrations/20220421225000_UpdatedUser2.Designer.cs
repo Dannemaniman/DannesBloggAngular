@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220421225000_UpdatedUser2")]
+    partial class UpdatedUser2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.2");
@@ -132,7 +134,7 @@ namespace API.Data.Migrations
                         .HasForeignKey("ThreadId");
 
                     b.HasOne("API.Entities.AppUser", "User")
-                        .WithMany("Replies")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Thread");
@@ -151,8 +153,6 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
-                    b.Navigation("Replies");
-
                     b.Navigation("Threads");
                 });
 
