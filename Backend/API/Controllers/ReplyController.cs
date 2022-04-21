@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
@@ -11,10 +12,12 @@ namespace API.Controllers
   {
     private readonly IReplyRepository _replyRepository;
     private readonly IThreadRepository _threadRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly IAppService _appService;
 
     public ReplyController(
+        IUserRepository userRepository,
         IReplyRepository replyRepository, 
         IThreadRepository threadRepository, 
         IMapper mapper, 
@@ -24,6 +27,7 @@ namespace API.Controllers
       _threadRepository = threadRepository;
       _mapper = mapper;
       _appService = appService;
+      _userRepository = userRepository;
     }
 
     [HttpGet("{replyId}")]
@@ -33,53 +37,51 @@ namespace API.Controllers
       return await _replyRepository.GetReplyByIdAsync(Int32.Parse(replyId));
     }
 
-    [HttpPost()]
+    [HttpPost]
     [Authorize]
-    public async Task<ActionResult<ReturnThread>> createNewThread(ThreadDto threadData)
+    public async Task<ActionResult<UserReply>> createNewReply(ReplyDto replyDto)
     {
 
-      var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-      if (username == null) return null;
+        if (username == null) return null;
 
-     var user = await GetUser(username);
+        var user = await GetUser(username);
 
-     if(user == null) return NotFound();
+        if(user == null) return NotFound();
 
-      threadData.User = user;
+        replyDto.User = user;
 
-      var newThread = _mapper.Map<UserThread>(threadData);
+        var newReply = _mapper.Map<UserReply>(replyDto);
 
-      if(newThread == null) return Problem();
+        if(newReply == null) return Problem();
 
-      _threadRepository.Add(newThread);
+        _replyRepository.Add(newReply);
 
-      if(await _threadRepository.SaveAllAsync() == false) return Problem();
+        if(await _threadRepository.SaveAllAsync() == false) return Problem();
 
-      var returnThread = new ReturnThread
-      {
-        Id = newThread.Id,
-        Title = newThread.Title,
-        Content = newThread.Content,
-        CategoryId = newThread.CategoryId,
-        Replies = newThread.Replies,
-        Views = newThread.Views,
-        UserName = newThread.User.UserName,
-        Email = newThread.User.Email,
-        WasCreated = newThread.WasCreated
-      };
+        // var returnThread = new ReturnThread
+        // {
+        //     Id = newThread.Id,
+        //     Title = newThread.Title,
+        //     Content = newThread.Content,
+        //     CategoryId = newThread.CategoryId,
+        //     Replies = newThread.Replies,
+        //     Views = newThread.Views,
+        //     UserName = newThread.User.UserName,
+        //     Email = newThread.User.Email,
+        //     WasCreated = newThread.WasCreated
+        // };
 
-      return Ok(returnThread);
+        return Ok(newReply);
     }
 
-    [Route("category/{categoryId}")]
+    [Route("thread/{threadId}")]
     [HttpGet]
-    // [Authorize]
-    public async Task<IEnumerable<UserThread>> getThreadsByCategoryId(string categoryId)
+    [Authorize]
+    public async Task<IEnumerable<UserReply>> getRepliesByThreadId(string threadId)
     {
-      var hej = categoryId;
-
-      return await _threadRepository.GetThreadsByCategoryIdAsync(categoryId);
+      return await _replyRepository.GetRepliesByThreadIdAsync(threadId);
     }
 
 
