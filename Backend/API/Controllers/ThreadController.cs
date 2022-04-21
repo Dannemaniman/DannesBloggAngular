@@ -26,8 +26,6 @@ namespace API.Controllers
     [Authorize]
     public async Task<ActionResult<ReturnThread>> getThreadById(int threadId)
     {
-      var hej = threadId;
-
       return await _threadRepository.GetThreadByIdAsync(threadId);
     }
 
@@ -35,7 +33,6 @@ namespace API.Controllers
     [Authorize]
     public async Task<ActionResult<ReturnThread>> createNewThread(ThreadDto threadData)
     {
-
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
       if (username == null) return null;
@@ -72,15 +69,11 @@ namespace API.Controllers
 
     [Route("category/{categoryId}")]
     [HttpGet]
-    // [Authorize]
+    [Authorize]
     public async Task<IEnumerable<UserThread>> getThreadsByCategoryId(string categoryId)
     {
-      var hej = categoryId;
-
       return await _threadRepository.GetThreadsByCategoryIdAsync(categoryId);
     }
-
-
 
     public async Task<AppUser> GetUser(string username) 
     {
