@@ -34,7 +34,7 @@ export class ThreadService {
 
   public getThreadsByCategory() {
     const categoryId = this.appService.categoryId
-    this.http.get<Thread[]>(this.baseUrl + '/thread/category/' + categoryId).subscribe(threads => {
+    this.http.get<Thread[]>(this.baseUrl + '/thread/category' + categoryId).subscribe(threads => {
       if(threads) {
         this.threads = threads
       }

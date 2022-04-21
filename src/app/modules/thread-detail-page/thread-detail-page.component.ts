@@ -9,7 +9,8 @@ import { ThreadService } from 'src/app/core/services/thread.service';
   styleUrls: ['./thread-detail-page.component.scss']
 })
 export class ThreadDetailPageComponent implements OnInit, OnDestroy {
-  public thread: any; 
+  public thread: any;
+  public reply: any; 
   private subscription: Subscription[] = [];
   //= {
     // title: "Daniel often references the Braille version of the bible. Why?",
@@ -20,36 +21,43 @@ export class ThreadDetailPageComponent implements OnInit, OnDestroy {
     // date: "20:48  18/6-2022"
   // }
 
-  public reply = {
-    title: "Dude what?",
-    content: "Dude.. who even are you",
-    replies: "10 148",
-    views: "214 002",
-    author: "kalle@korv.se",
-    date: "20:48  18/6-2022"
-  }
+  // public reply = {
+  //   title: "Dude what?",
+  //   content: "Dude.. who even are you",
+  //   replies: "10 148",
+  //   views: "214 002",
+  //   author: "kalle@korv.se",
+  //   date: "20:48  18/6-2022"
+  // }
 
   public toggleReply: boolean = false;
 
   constructor(private threadService: ThreadService, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.route.params.subscribe(param => {
       this.subscription.push(
-      this.threadService.getThread(param['id']).subscribe(response => {
-        console.log(response)
-        this.thread = response
-      })
+        this.threadService.getThread(param['id']).subscribe(response => {
+          console.log(response)
+          this.thread = response
+        })
       )
     })
   }
 
-  ngOnDestroy(): void {
-    
+  public ngOnDestroy(): void {
+    this.subscription.forEach(subscription => {
+      subscription.unsubscribe()
+    })
   }
 
-  public toggleReplying() {
+  public toggleEditThread() {
+    console.log("clicked toggleEditThread!");
+  }
+
+  public toggleReplying(data?: any) {
+    console.log(data);
+    
     this.toggleReply = !this.toggleReply
   }
-
 }

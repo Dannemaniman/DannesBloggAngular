@@ -1,7 +1,7 @@
-<div class="backdrop" (click)="toggleReplying()"></div>
+<div class="backdrop" (click)="onClickToggleWindow()"></div>
 <div class="reply__container">
   <h1>{{modalTitle}}</h1>
-  <form (ngSubmit)="postReply(title, content)" #form="ngForm">
+  <form (ngSubmit)="onEmitValues(title, content)" #form="ngForm">
     <div>
       <div>
         <label for="title">Title</label>
