@@ -42,8 +42,7 @@ export class ReplyService {
     })
   } 
 
-  public createNewReply(title: string, content: string, threadId: number) {
-    this.http.post<Reply>(this.baseUrl + '/reply', {title, content, threadId})
-      .subscribe(reply => console.log(reply))
+  public createNewReply(title: string, content: string, threadId: string) {
+    return this.http.post<Reply>(this.baseUrl + '/reply', {title, content, threadId})
   }
 }

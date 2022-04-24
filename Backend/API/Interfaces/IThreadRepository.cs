@@ -9,7 +9,7 @@ namespace API.Interfaces
 {
   public interface IThreadRepository
   {
-    Task<ReturnThread> GetThreadByIdAsync(int id);
+    Task<UserThread> GetThreadByIdAsync(int id);
     Task<IEnumerable<UserThread>> GetThreadsFromUserAsync(AppUser user);
     Task<IEnumerable<UserThread>> GetThreadsByCategoryIdAsync(string categoryId);
     void Update(ThreadDto thread); //Update kommer bara uppdatera Tracking status i Entity Frameworket.. för att säga att någonting har förändrats.. men alla andra är Tasks!

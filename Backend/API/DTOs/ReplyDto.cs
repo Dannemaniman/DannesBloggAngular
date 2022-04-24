@@ -13,5 +13,6 @@ namespace API.DTOs
     public string? Content { get; set; }
     public string? ThreadId { get; set; }
     public AppUser? User { get; set; }
+    public UserThread? Thread { get; set; }
   }
 }

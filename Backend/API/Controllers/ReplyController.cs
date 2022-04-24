@@ -36,7 +36,7 @@ namespace API.Controllers
 
     [HttpPost()]
     [Authorize]
-    public async Task<ActionResult<UserReply>> createNewReply(ReplyDto replyDto)
+    public async Task<ActionResult<ReturnReply>> createNewReply(ReplyDto replyDto)
     {
         var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -48,6 +48,10 @@ namespace API.Controllers
 
         replyDto.User = user;
 
+        var thread = await _threadRepository.GetThreadByIdAsync(Int32.Parse(replyDto.ThreadId));
+
+        replyDto.Thread = thread;
+
         var newReply = _mapper.Map<UserReply>(replyDto);
 
         if(newReply == null) return Problem();
@@ -56,20 +60,17 @@ namespace API.Controllers
 
         if(await _replyRepository.SaveAllAsync() == false) return Problem();
 
-        // var returnThread = new ReturnThread
-        // {
-        //     Id = newThread.Id,
-        //     Title = newThread.Title,
-        //     Content = newThread.Content,
-        //     CategoryId = newThread.CategoryId,
-        //     Replies = newThread.Replies,
-        //     Views = newThread.Views,
-        //     UserName = newThread.User.UserName,
-        //     Email = newThread.User.Email,
-        //     WasCreated = newThread.WasCreated
-        // };
+        var returnReply = new ReturnReply
+        {
+            Id = newReply.Id,
+            Title = newReply.Title,
+            Content = newReply.Content,
+            UserName = newReply.User.UserName,
+            Email = newReply.User.Email,
+            WasCreated = newReply.WasCreated
+        };
 
-        return Ok(newReply);
+        return Ok(returnReply);
     }
 
     [Route("thread/{threadId}")]

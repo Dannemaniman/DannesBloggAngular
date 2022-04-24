@@ -16,11 +16,12 @@ namespace API.Data.Repositories
       _mapper = mapper;
       _context = context;
     }
-    public async Task<ReturnThread> GetThreadByIdAsync(int id)
+    public async Task<UserThread> GetThreadByIdAsync(int id)
     {
-       var thread = await _context.UserThreads.FindAsync(id);
+       var thread = await _context.UserThreads.Include(p => p.User).Include(p => p.Replies).FirstOrDefaultAsync(p => p.Id == id);
       //  thread.Created = DateTime.UtcNow;
-       return _mapper.Map<ReturnThread>(thread);
+      //  return _mapper.Map<ReturnThread>(thread);
+      return thread;
     }
 
     public async Task<IEnumerable<UserThread>> GetThreadsFromUserAsync(AppUser user)

@@ -58,7 +58,9 @@ export class ThreadDetailPageComponent implements OnInit, OnDestroy {
   }
 
   public onValuesEmitted(title: string, content: string) {
-    this.replyService.createNewReply(title, content, this.thread.id)
+    let threadId = this.thread.id.toString()
+    this.replyService.createNewReply(title, content, threadId)
+      .subscribe(response => window.location.reload())
   }
 
   public onToggleCreateWindow(data?: any) {

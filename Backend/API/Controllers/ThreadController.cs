@@ -26,7 +26,11 @@ namespace API.Controllers
     [Authorize]
     public async Task<ActionResult<ReturnThread>> getThreadById(int threadId)
     {
-      return await _threadRepository.GetThreadByIdAsync(threadId);
+      var thread = await _threadRepository.GetThreadByIdAsync(threadId);
+
+      var returnThread = _mapper.Map<ReturnThread>(thread);
+
+      return returnThread;
     }
 
     [HttpPost()]

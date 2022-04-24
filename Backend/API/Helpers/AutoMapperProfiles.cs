@@ -20,9 +20,11 @@ namespace API.Helpers
       CreateMap<AppUser, MemberDto>()
         .ForMember(dest => dest.Threads, opt => opt.MapFrom(src =>
           src.Threads.Any()));
-      CreateMap<ThreadDto, UserThread>();
+      CreateMap<ThreadDto, UserThread>(); 
       CreateMap<MemberUpdateDto, AppUser>();
-      CreateMap<UserThread, ReturnThread>();
+      CreateMap<UserThread, ReturnThread>()
+        .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
+        .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
       CreateMap<ReplyDto, UserReply>();
     }
     //OM AUTOMAPPER TRÄFFAR EN METOD/PROPERTY MED NAMNET Get FÖRE.. SÅ KOMMER DEN KÖRA FUNKTIONEN OCH SÄTTA RETURNVÄRDET TILL AGE! IFALL BÄGGE ÄR INT!
