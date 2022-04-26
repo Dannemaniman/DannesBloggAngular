@@ -33,6 +33,15 @@ namespace API.Controllers
       return returnThread;
     }
 
+    
+    [HttpGet("latest")]
+    public async Task<IEnumerable<ReturnThread>> getLatestThreads()
+    {
+      var threads = await _threadRepository.GetLatestThreads(10);
+      
+      return _mapper.Map<List<ReturnThread>>(threads);
+    }
+
     [HttpPost()]
     [Authorize]
     public async Task<ActionResult<ReturnThread>> createNewThread(ThreadDto threadData)

@@ -1,8 +1,9 @@
 import { HttpClient } from "@angular/common/http"
 import { Component, OnInit } from '@angular/core'
 import { Observable, throwError } from 'rxjs'
-import { catchError, retry } from 'rxjs/operators'
+import { catchError, retry, take } from 'rxjs/operators'
 import { AppService } from "src/app/core/services/app.service"
+import { ThreadService } from "src/app/core/services/thread.service"
 
 @Component({
   selector: 'app-home-page',
@@ -49,6 +50,8 @@ export class HomePageComponent implements OnInit {
     },
   ]
 
+  public latestThreads: any;
+
   public categories = [
     { title: "All", threadCount: "10", code: 'f1' },
     { title: "Spirituality of Daniel", threadCount: "1", code: 'f2' },
@@ -59,14 +62,17 @@ export class HomePageComponent implements OnInit {
 
   public showThreadCreater = false;
 
-  constructor(private http: HttpClient, public appService: AppService) { }
+  constructor(private http: HttpClient, public appService: AppService, private threadService: ThreadService) { }
 
   ngOnInit(): void {
-    // this.http.get("https://localhost:5001/api/app/categories").subscribe(response => {
-    //   console.log(response)
-    // }, error => {
-    //   console.log(error)
-    // })
+    this.threadService.getLatestThreads()
+      .pipe(
+        take(1)
+      )
+      .subscribe(response => {
+      console.log(response)
+      this.latestThreads = response
+    })
   }
 
   public toggleCreateThread() {

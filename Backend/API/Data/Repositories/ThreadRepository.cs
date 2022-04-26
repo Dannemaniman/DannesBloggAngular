@@ -24,6 +24,19 @@ namespace API.Data.Repositories
       return thread;
     }
 
+    public async Task<IEnumerable<UserThread>> GetLatestThreads(int amount)
+    {
+            //Denna query kan jag använda om jag vill https://stackoverflow.com/questions/11903269/return-entity-with-latest-timestamp-matching-a-userid-linq
+      // var act = _context.ActivityLogs
+      //   .Where(a => a.UserId == user.UserId)
+      //   .OrderByDescending(a => a.Timestamp)
+      //   .FirstOrDefault();
+        //Eller denna Mytable.OrderByDesc(x => x.TimesRead).take(5); https://stackoverflow.com/questions/19889461/how-to-get-the-5-highest-values-trough-linq
+        var threads = await _context.UserThreads.OrderByDescending(x => x.WasCreated).Take(amount).Include(p => p.Replies).ToListAsync();
+
+        return threads;
+    }
+
     public async Task<IEnumerable<UserThread>> GetThreadsFromUserAsync(AppUser user)
     {
       return await _context.UserThreads

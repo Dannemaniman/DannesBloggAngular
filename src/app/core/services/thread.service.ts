@@ -41,6 +41,10 @@ export class ThreadService {
     })
   }
 
+  public getLatestThreads() {
+    return this.http.get<Thread>(this.baseUrl + '/thread/latest')
+  }
+
   public getThread(threadId: string) {
     return this.http.get<Thread>(this.baseUrl + '/thread/' + threadId)
   }

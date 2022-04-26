@@ -10,6 +10,7 @@ export class ThreadBarComponent implements OnInit {
   @Input() author: string
   @Input() replies: string
   @Input() views: string
+  @Input() created: string
 
   constructor() { }
 

@@ -27,9 +27,9 @@
       <div class="thread-section_quotebox">
         <h2>You gotta give Respect, to get Respect. <span style="color: #7B71C2;">- Daniel Langås</span></h2>
       </div>
-      <div class="threads__container">
-        <app-thread-bar *ngFor="let item of data" [title]="item.title" [author]="item.author" [replies]="item.replies"
-          [views]="item.views">
+      <div class="threads__container" *ngIf="latestThreads">
+        <app-thread-bar *ngFor="let item of latestThreads" [title]="item.title" [author]="item.author" [replies]="item.repliesCount"
+          [views]="item.viewsCount" [created]="item.wasCreated">
         </app-thread-bar>
       </div>
     </div>
