@@ -7,6 +7,7 @@ import { ThreadBarComponent } from './components/thread-bar/thread-bar.component
 import { ReplyComponent } from './components/reply/reply.component';
 import { RegisterModalComponent } from './components/register-modal/register-modal.component'
 import { FormsModule } from "@angular/forms"
+import { AppRoutingModule } from '../app-routing.module'
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { FormsModule } from "@angular/forms"
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   exports: [
     HeaderComponent,

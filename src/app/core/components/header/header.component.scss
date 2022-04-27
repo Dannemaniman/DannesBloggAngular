@@ -32,11 +32,11 @@ header {
       flex-direction: column;
       cursor: pointer;
 
-      .hamburger-section {
-        margin-bottom: 3px;
-        width: 30px;
-        height: 5px;
-        background-color: white;
+      .user-image {
+        height: 45px;
+        width: 50px;
+        position: relative;
+        cursor: pointer;
       }
     }
   }

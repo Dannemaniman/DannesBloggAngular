@@ -1,21 +1,23 @@
 using System.ComponentModel.DataAnnotations;
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Entities
 {
   /*HAN KALLAR DEN FÖR AppUser.. PGA USER ÄR ETT VÄLDIGT ÖVERANVÄNT NAMN I KOD.. 
   SÅ AppUser VISAR OSS ATT DETTA ÄR VÅR USER .. OCH INTE EN USER SOM KOMMER FRÅN ANDRA DELAR AV dotnet RAMVERKET!*/
-  public class AppUser
+  public class AppUser : IdentityUser<int>
   {//skriv bara här 'prop' för att skapa en property
-    public int Id { get; set; } //VI VILL ATT DEN SKA HETA Id.. SÅ ATT ENTITY FRAMEWORKET KÄNNER IGEN DEN SOM EN PRIMARY KEY!!
+  /*    --Uppdatering.. behöver ej Id vid Identity, samma med UserName PasswordHash+Salt neda*/ 
+  //  public int Id { get; set; } //VI VILL ATT DEN SKA HETA Id.. SÅ ATT ENTITY FRAMEWORKET KÄNNER IGEN DEN SOM EN PRIMARY KEY!!
     /*
     OCH I MED ATT DET ÄR EN INTEGER SÅ KOMMER ENTITY FRAMEWORKET LÖSA SÅ ATT DATABASEN AUTO INCREMENTAR DEN VID VARJE NYTT RECORD!
     JAG KAN DOCK VÄLJA ANTINGEN ID MED UPPERCASE ELLER Id MED LOWERCASE I SLUTET!
     */
-    public string? UserName { get; set; } //VI SKRIVER UserName MED STORT N PGA NÄR VI ANVÄNDER ASP.NET CORE IDENTITY.. ANNARS KOMMER VI BEHÖVA REFACTORA SENARE FÖR DET SKA FUNKA!!
+    // public string? UserName { get; set; } //VI SKRIVER UserName MED STORT N PGA NÄR VI ANVÄNDER ASP.NET CORE IDENTITY.. ANNARS KOMMER VI BEHÖVA REFACTORA SENARE FÖR DET SKA FUNKA!!
 
-    public byte[]? PasswordHash { get; set; }
-    public byte[]? PasswordSalt { get; set; }
+    // public byte[]? PasswordHash { get; set; }
+    // public byte[]? PasswordSalt { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public int? Age { get; set; }
@@ -24,6 +26,7 @@ namespace API.Entities
     public DateTime WasModified { get; set; } = DateTime.UtcNow;
     public ICollection<UserThread>? Threads { get; set; }
     public ICollection<UserReply>? Replies { get; set; }
+    public ICollection<AppUserRole> UserRoles { get; set; }
   }
 }
 

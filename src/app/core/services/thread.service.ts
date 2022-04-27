@@ -28,9 +28,7 @@ export class ThreadService {
   constructor(
     private http: HttpClient, 
     private appService: AppService,
-    private router: Router) {
-      // this.getThreadsByCategory()
-     }
+    private router: Router) { }
 
   public getThreadsByCategory() {
     const categoryId = this.appService.categoryId
@@ -53,8 +51,8 @@ export class ThreadService {
     const categoryId = this.appService.categoryId
 
     this.http.post<Thread>(this.baseUrl + '/thread', {title, content, categoryId})
-    .subscribe(thread => {
-      this.router.navigateByUrl(`/category/${thread.categoryId}/thread/${thread.id}`)
-    })
+      .subscribe(thread => {
+        this.router.navigateByUrl(`/category/${thread.categoryId}/thread/${thread.id}`)
+      })
   }
 }

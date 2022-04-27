@@ -4,10 +4,12 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using API.Controllers.Identity;
 using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,25 +17,22 @@ namespace API.Controllers
 {
   public class AccountController : BaseApiController
   {
-    private readonly DataContext _context;
     private readonly ITokenService _tokenService;
-    public AccountController(DataContext context, ITokenService tokenService)
+    private readonly UserManager<AppUser> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly RoleManager<AppRole> _roleManager;
+    public AccountController(RoleManager<AppRole> roleManager, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
     {
+      _roleManager = roleManager;
+      _signInManager = signInManager;
+      _userManager = userManager;
       _tokenService = tokenService;
-      _context = context;
     }
 
     [HttpPost("register")]
-    //En av sakerna som ApiController gör.. är att binda parameters den hittar till parametersen av min metod!
-    //UTAN APICONTROLLER HADE VI BEHÖVT SKRIVA VART VI FÅR PARAMETRARNA IFRÅN ([FromBody])
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
-      //vi får tillgång till BadRequest pga ActionResult
       if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken.");
-
-      //using betyder att variabeln kommer förstöras efter statement blocket tar slut, eller:
-      //"Using statement försäkrar oss att är vi är klar med HMAC classen..  så kommer den disposas av korrekt!"
-      using var hmac = new HMACSHA512();
 
       var user = new AppUser
       {
@@ -42,51 +41,88 @@ namespace API.Controllers
         Age = registerDto.Age,
         Email = registerDto.Email,
         UserName = registerDto.UserName.ToLower(),
-        PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-        PasswordSalt = hmac.Key,
         Threads = null
       };
 
-      _context.Users?.Add(user);
+      var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-      await _context.SaveChangesAsync();
+      if (!result.Succeeded) return BadRequest();
+
+      var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+
+      if (!roleResult.Succeeded) return BadRequest();
 
       return new UserDto
       {
         UserName = user.UserName,
-        Token = _tokenService.CreateToken(user)
+        Token = await _tokenService.CreateToken(user)
       };
+
+      // await InitializeRoles();
+      // var admin = await CreateAdmin();
+      // return Ok(admin);
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
-      var user = await _context.Users
+      var user = await _userManager.Users
       .Include(t => t.Threads)
+      .Include(r => r.Replies)
       .SingleOrDefaultAsync(x => x.UserName == loginDto.UserName);
 
-      if (user == null) return Unauthorized("Invalid Username.");
+      if (user == null) return BadRequest();
 
-      using var hmac = new HMACSHA512(user.PasswordSalt);
+      var result = await _signInManager
+        .CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-      var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+      if (!result.Succeeded) return BadRequest();
 
-      for (int i = 0; i < computedHash.Length; i++)
-      {
-        if (computedHash[i] != user.PasswordHash[i])
-          return Unauthorized("Invalid Password");
-      }
+      var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+
+      if (!roleResult.Succeeded) return BadRequest();
 
       return new UserDto
       {
         UserName = user.UserName,
-        Token = _tokenService.CreateToken(user)
+        Token = await _tokenService.CreateToken(user)
       };
     }
 
     private async Task<bool> UserExists(string username)
     {
-      return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
+      return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+    }
+
+    private async Task InitializeRoles()
+    {
+      var roles = new List<AppRole>
+      {
+        new AppRole{Name = "Member"},
+        new AppRole{Name = "Admin"},
+      };
+
+      foreach (var role in roles)
+      {
+        await _roleManager.CreateAsync(role);
+      }
+    }
+
+    private async Task<UserDto> CreateAdmin()
+    {
+      var admin = new AppUser
+      {
+        UserName = "admin"
+      };
+
+      await _userManager.CreateAsync(admin, "Dannemaniman991!!");
+      await _userManager.AddToRoleAsync(admin, "Admin");
+
+      return new UserDto
+      {
+        UserName = admin.UserName,
+        Token = await _tokenService.CreateToken(admin)
+      };
     }
   }
 }
