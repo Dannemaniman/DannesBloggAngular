@@ -28,8 +28,13 @@
         <h2>You gotta give Respect, to get Respect. <span style="color: #7B71C2;">- Daniel Langås</span></h2>
       </div>
       <div class="threads__container" *ngIf="latestThreads">
-        <app-thread-bar *ngFor="let item of latestThreads" [title]="item.title" [author]="item.author" [replies]="item.repliesCount"
-          [views]="item.viewsCount" [created]="item.wasCreated">
+        <app-thread-bar *ngFor="let item of latestThreads" 
+          [title]="item.title" 
+          [author]="item.author" 
+          [replies]="item.repliesCount"
+          [views]="item.viewsCount" 
+          [created]="item.wasCreated"
+          [routerLink]="['category/', item.categoryId, 'thread', item.id]">
         </app-thread-bar>
       </div>
     </div>

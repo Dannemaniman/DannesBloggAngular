@@ -29,6 +29,12 @@ namespace API.Controllers
       _tokenService = tokenService;
     }
 
+    [HttpGet("change-password")]
+    public async Task<ActionResult<UserDto>> ChangePassword(RegisterDto registerDto)
+    {
+
+    }
+
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
