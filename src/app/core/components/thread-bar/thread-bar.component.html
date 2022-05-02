@@ -1,9 +1,11 @@
 <div class="thread-bar__container">
   <div class="thread-bar__info">
     <p>{{title}}</p>
-    <p>{{author}}</p>
+    <p *ngIf="author">{{author}}</p>
   </div>
-  <div>{{created}}</div>
+  <div class="thread-bar__created">
+    <div style="color: #989898;">Created: {{created | date}}</div>
+  </div>
   <div class="thread-bar__status">
     <ng-container *ngIf="replies !== ''">
       <p>{{replies}} Replies</p>

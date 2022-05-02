@@ -1,10 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { PaginatedResult, Pagination } from '../models/pagination';
 import { Reply } from '../models/reply';
-import { AppService } from './app.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +11,11 @@ import { AppService } from './app.service';
 export class ReplyService {
   private _replies$: any = new BehaviorSubject([]);
   private baseUrl = environment.apiUrl
+
+  private paginatedResult: PaginatedResult<Reply[]> = new PaginatedResult<Reply[]>();
+  public pagination: Pagination | any;
+  public pageNumber = 1;
+  public pageSize = 5;
   
   public get replies$() {
     return this._replies$.asObservable();
@@ -25,19 +29,33 @@ export class ReplyService {
     this._replies$.next(replies)
   }
 
-  constructor(
-    private http: HttpClient, 
-    private appService: AppService,
-    private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   public getReplyById(replyId: string) {
     return this.http.get<Reply>(this.baseUrl + '/reply/thread/' + replyId)
   }
 
-  public getRepliesByThreadId(threadId: string) {
-    this.http.get<Reply[]>(this.baseUrl + '/reply/thread/' + threadId).subscribe(replies => {
-      if(replies) {
-        this.replies = replies
+  public getRepliesByThreadId(threadId: string, page?: number, itemsPerPage?: number) {
+    let params = new HttpParams();
+
+    if(page && itemsPerPage) {
+      params = params.append('pageNumber', page.toString());
+      params = params.append('pageSize', itemsPerPage.toString());
+    }
+
+    this.http.get<Reply[]>(this.baseUrl + '/reply/thread/' + threadId, {observe: 'response', params})
+    .pipe(map(response => {
+        this.paginatedResult.result = response.body;
+        const pagination = response.headers.get('Pagination')
+
+        if(pagination)  this.paginatedResult.pagination = JSON.parse(pagination)
+        
+        return this.paginatedResult;
+      }))
+    .subscribe(response => {
+      if(response) {
+        this.replies = response.result
+        this.pagination = response.pagination
       }
     })
   } 

@@ -2,15 +2,16 @@
   width: 80%;
   margin: 0 auto;
   padding-top: 3rem;
+  padding-bottom: 6rem;
 
   .user-profile__settings {
-    background-color: #6D6D6D;
+    background-color: #484848;
     border: 1px solid #707070;
     border-radius: 10px;
     overflow: hidden;
 
     .profile-settings__panel {
-      background-color: #484848;
+      background-color: #6D6D6D;
       border: 1px solid #707070;
       margin-bottom: 2rem;
 
@@ -88,14 +89,14 @@
   }
 
   .user-profile__threads {
-    background-color: #6D6D6D;
+    background-color: #484848;
     border: 1px solid #707070;
     border-radius: 10px;
     overflow: hidden;
     margin-top: 3rem;
 
     .profile-threads__panel {
-      background-color: #484848;
+      background-color: #6D6D6D;
       border: 1px solid #707070;
 
       p {
@@ -108,19 +109,19 @@
     }
 
     .profile-threads__content {
-      margin-bottom: 3rem;
+      // margin-bottom: 3rem;
     }
   }
 
   .user-profile__replies {
     margin-top: 3rem;
-    background-color: #6D6D6D;
+    background-color: #484848;
     border: 1px solid #707070;
     border-radius: 10px;
     overflow: hidden;
 
     .profile-replies__panel {
-      background-color: #484848;
+      background-color: #6D6D6D;
       border: 1px solid #707070;
 
       p {
@@ -133,7 +134,7 @@
     }
 
     .profile-replies__content {
-      margin-bottom: 3rem;
+      // margin-bottom: 3rem;
     }
   }
 }

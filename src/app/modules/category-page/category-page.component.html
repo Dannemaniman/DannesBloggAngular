@@ -24,11 +24,12 @@
         <button class="btn btn-light" (click)="toggleCreateThread()">New topic</button>
       </div>
       <div class="threads__container">
-        <app-thread-bar *ngFor="let item of threadService.threads$ | async" 
+        <app-thread-bar *ngFor="let item of threadService.threadsByCategory$ | async" 
           [title]="item.title" 
-          [author]="item.author" 
-          [replies]="item.replies"
-          [views]="item.views"
+          [author]="item.userName" 
+          [replies]="item.repliesCount"
+          [views]="item.viewsCount"
+          [created]="item.wasCreated.toString()"
           [routerLink]="['thread/', item.id]">
         </app-thread-bar>
       </div>

@@ -27,13 +27,13 @@
       <div class="thread-section_quotebox">
         <h2><span style="color: #7B71C2;">Latest Threads</span></h2>
       </div>
-      <div class="threads__container" *ngIf="latestThreads">
-        <app-thread-bar *ngFor="let item of latestThreads" 
+      <div class="threads__container">
+        <app-thread-bar *ngFor="let item of (threadService.threadsByLatest$ | async)" 
           [title]="item.title" 
-          [author]="item.author" 
+          [author]="item.userName" 
           [replies]="item.repliesCount"
           [views]="item.viewsCount" 
-          [created]="item.wasCreated"
+          [created]="item.wasCreated.toString()"
           [routerLink]="['category/', item.categoryId, 'thread', item.id]">
         </app-thread-bar>
       </div>

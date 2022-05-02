@@ -1,9 +1,14 @@
+import { Reply } from "./reply"
+
 export interface Thread {
     id: number
-    replies: number
-    views: number
+    title: string
     content: string
-    email: string
-    created: Date
     categoryId: string
+    repliesCount: string
+    viewsCount: string
+    userName: string
+    email: string
+    wasCreated: Date
+    replies: Reply[]
 }

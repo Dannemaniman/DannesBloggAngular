@@ -14,16 +14,10 @@ export class HomePageComponent implements OnInit {
   public latestThreads: any;
   public showThreadCreater = false;
 
-  constructor(public appService: AppService, private threadService: ThreadService) { }
+  constructor(public appService: AppService, public threadService: ThreadService) { }
 
   ngOnInit(): void {
     this.threadService.getLatestThreads()
-      .pipe(
-        take(1)
-      )
-      .subscribe(response => {
-        this.latestThreads = response
-      })
   }
 
   public toggleCreateThread() {

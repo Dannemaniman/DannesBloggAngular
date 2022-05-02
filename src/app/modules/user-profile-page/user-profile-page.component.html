@@ -33,6 +33,7 @@
         [author]="thread.author" 
         [replies]="thread.repliesCount"
         [views]="thread.viewsCount"
+        [created]="thread.wasCreated.toString()"
         [routerLink]="['/category/', thread.categoryId, 'thread', thread.id]">
       </app-thread-bar>
     </div>
@@ -44,7 +45,7 @@
     <div class="profile-replies__content">
       <app-thread-bar *ngFor="let reply of allReplies" 
         [title]="reply.title" 
-        [author]="reply.author" 
+        [created]="reply.wasCreated.toString()"
         [routerLink]="['/category/', reply.thread.categoryId, 'thread', reply.id]">
       </app-thread-bar>
     </div>

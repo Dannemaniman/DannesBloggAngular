@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
-import { Observable } from "rxjs"
-import { User } from "../../models/user"
 import { AccountService } from "../../services/account.service"
-import { HttpService } from "../../services/http.service"
 
 @Component({
   selector: 'app-header',
@@ -21,10 +18,6 @@ export class HeaderComponent implements OnInit {
 
   public toggleRegisterModal() {
     this.showRegisterModal = !this.showRegisterModal
-  }
-
-  public popMenu() {
-    console.log("Open menu clicked.")
   }
 
   public onLoginHandler(username: HTMLInputElement, password: HTMLInputElement) {
