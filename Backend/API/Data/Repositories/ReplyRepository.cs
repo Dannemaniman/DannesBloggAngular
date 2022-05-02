@@ -2,6 +2,7 @@
 
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -31,11 +32,23 @@ namespace API.Data.Repositories
         .ToListAsync();
     }
 
-    public async Task<IEnumerable<UserReply>> GetRepliesByThreadIdAsync(string threadId)
+    public async Task<PagedList<UserReply>> GetRepliesByThreadIdAsync(UserParams userParams, string threadId)
     {
-    return await _context.UserReplies
+      var query =  _context.UserReplies
         .Where<UserReply>(thread => thread.Id == Int32.Parse(threadId))
-        .ToListAsync();
+        .AsNoTracking();
+
+      return await PagedList<UserReply>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+      /*VI SER NU ATT TYPEN AV QUERYN OVAN ÄR EN IQueryable! 
+        Detta är alltså ett Expression Tree.. som kommer byggas av Entity Frameworket.. Sedan när vi executar .ToListAsync().. 
+        Så kommer den executa requesten till vår databas!
+        Det vi också kan specifiera i trädet, för att göra det ÄNNU mera optimerat.. är att by default, när vi hämtar entities från Entity ramverket.. så applyar Entity Tracking på dessa entiteterna..
+        I med att detta är en lista som vi bara läser från.. så kan vi specifiera .AsNoTracking()! Och då kommer Entity ramverket inte tracka den!: 
+        
+        “MEN.. JAG EXECUTAR ALDRIG MIN REQUEST JU???..”
+        
+        Jo det gör vi! Kolla nu igen i CreateAsync metoden!! Vi kör våra 2 requests där!
+        Vi skickar alltså detta till en metod som executar det åt oss!*/
     }
     public void Update(ReplyDto replyDto) 
     {

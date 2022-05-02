@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -35,11 +37,15 @@ namespace API.Controllers
 
     
     [HttpGet("latest")]
-    public async Task<IEnumerable<ReturnThread>> getLatestThreads()
+    public async Task<ActionResult<IEnumerable<ReturnThread>>> getLatestThreads([FromQuery]UserParams userParams)
     {
-      var threads = await _threadRepository.GetLatestThreads(10);
-      
-      return _mapper.Map<List<ReturnThread>>(threads);
+      var threads = await _threadRepository.GetLatestThreads(userParams, 10);
+
+      Response.AddPaginationHeader(threads.CurrentPage, threads.PageSize, threads.TotalCount, threads.TotalPages);
+
+      if(threads.Equals(null)) return NotFound();
+
+      return Ok(_mapper.Map<List<ReturnThread>>(threads));
     }
 
     [HttpPost()]
@@ -84,9 +90,18 @@ namespace API.Controllers
     [Route("category/{categoryId}")]
     [HttpGet]
     [Authorize]
-    public async Task<IEnumerable<UserThread>> getThreadsByCategoryId(string categoryId)
+    public async Task<ActionResult<IEnumerable<UserThread>>> getThreadsByCategoryId([FromQuery]UserParams userParams, string categoryId)
     {
-      return await _threadRepository.GetThreadsByCategoryIdAsync(categoryId);
+      //På grund av att vi är i en ApiController.. Och faktumet att vi har satt det Attributet.. så borde Controllern vara smart nog att 
+      //känna igen när vi skickar upp query string parametrar (pagination info från clienten).. 
+      //Och den kommer matcha dem till UserParams classen!
+      var threads = await _threadRepository.GetThreadsByCategoryIdAsync(userParams, categoryId);
+
+      Response.AddPaginationHeader(threads.CurrentPage, threads.PageSize, threads.TotalCount, threads.TotalPages);
+
+      if(threads.Equals(null)) return NotFound();
+
+      return Ok(threads);
     }
 
     public async Task<AppUser> GetUser(string username) 

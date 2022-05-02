@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -76,9 +78,15 @@ namespace API.Controllers
     [Route("thread/{threadId}")]
     [HttpGet]
     [Authorize]
-    public async Task<IEnumerable<UserReply>> getRepliesByThreadId(string threadId)
+    public async Task<ActionResult<IEnumerable<UserReply>>> getRepliesByThreadId(UserParams userParams, string threadId)
     {
-      return await _replyRepository.GetRepliesByThreadIdAsync(threadId);
+      var replies = await _replyRepository.GetRepliesByThreadIdAsync(userParams, threadId);
+
+      Response.AddPaginationHeader(replies.CurrentPage, replies.PageSize, replies.TotalCount, replies.TotalPages);
+
+      if(replies.Equals(null)) return NotFound();
+
+      return Ok(replies);
     }
 
 

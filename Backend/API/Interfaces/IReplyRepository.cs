@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 
 namespace API.Interfaces
 {
@@ -7,9 +8,9 @@ namespace API.Interfaces
   {
     Task<UserReply> GetReplyByIdAsync(int id);
     Task<IEnumerable<UserReply>> GetRepliesFromUserAsync(AppUser user);
-    Task<IEnumerable<UserReply>> GetRepliesByThreadIdAsync(string threadId);
+    Task<PagedList<UserReply>> GetRepliesByThreadIdAsync(UserParams userParams, string threadId);
+    void Add(UserReply userReply);
     void Update(ReplyDto replyDto); //Update kommer bara uppdatera Tracking status i Entity Frameworket.. för att säga att någonting har förändrats.. men alla andra är Tasks!
     Task<bool> SaveAllAsync();
-    void Add(UserReply userReply);
   }
 }

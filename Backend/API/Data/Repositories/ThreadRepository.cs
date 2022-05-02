@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -18,15 +19,20 @@ namespace API.Data.Repositories
     }
     public async Task<UserThread> GetThreadByIdAsync(int id)
     {
-       var thread = await _context.UserThreads.Include(p => p.User).Include(p => p.Replies).FirstOrDefaultAsync(p => p.Id == id);
+       return await _context.UserThreads.Include(p => p.User).Include(p => p.Replies).FirstOrDefaultAsync(p => p.Id == id);
       //  thread.Created = DateTime.UtcNow;
       //  return _mapper.Map<ReturnThread>(thread);
-      return thread;
     }
 
-    public async Task<IEnumerable<UserThread>> GetLatestThreads(int amount)
+    public async Task<PagedList<UserThread>> GetLatestThreads(UserParams userParams, int amount)
     {
-        return await _context.UserThreads.OrderByDescending(x => x.WasCreated).Take(amount).Include(p => p.Replies).ToListAsync();
+        var query = _context.UserThreads
+          .OrderByDescending(x => x.WasCreated)
+          .Take(amount)
+          .Include(p => p.Replies)
+          .AsNoTracking();
+
+          return await PagedList<UserThread>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
 
     public async Task<IEnumerable<UserThread>> GetThreadsFromUserAsync(AppUser user)
@@ -36,11 +42,13 @@ namespace API.Data.Repositories
         .ToListAsync();
     }
 
-    public async Task<IEnumerable<UserThread>> GetThreadsByCategoryIdAsync(string categoryId)
+    public async Task<PagedList<UserThread>> GetThreadsByCategoryIdAsync(UserParams userParams, string categoryId)
     {
-    return await _context.UserThreads
+      var query = _context.UserThreads
         .Where<UserThread>(thread => thread.CategoryId == categoryId)
-        .ToListAsync();
+        .AsNoTracking();
+
+      return await PagedList<UserThread>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
     public void Update(ThreadDto thread) //denna är annorlunda.. vi kommer inte förändra ngt i databasen.. men vi kommer markera den, att den har blivit modifierad..
     {
