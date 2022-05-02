@@ -11,6 +11,7 @@ import { ThreadDetailPageComponent } from './modules/thread-detail-page/thread-d
 import { UserProfilePageComponent } from './modules/user-profile-page/user-profile-page.component'
 import { ToastrModule } from "ngx-toastr"
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor'
+import { FormsModule } from '@angular/forms'
 //VI TAR SEDAN BORT IMPORTS SOM VI INTE ANVÄNDER FÖR MER CLEAN CODE... 
 //DOCK SÅ KOMMER ANGULAR NÄR DEN BUILDAR APPEN ATT ÄNDÅ INTE COMPILEA KOD SOM INTE ANVÄNDS.. 
 
@@ -26,6 +27,7 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor'
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     CoreModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'

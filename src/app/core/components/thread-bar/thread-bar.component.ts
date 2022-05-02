@@ -6,11 +6,11 @@ import { Component, Input, OnInit } from '@angular/core'
   styleUrls: ['./thread-bar.component.scss']
 })
 export class ThreadBarComponent implements OnInit {
-  @Input() title: string
-  @Input() author: string
-  @Input() replies: string
-  @Input() views: string
-  @Input() created: string
+  @Input() title: string = ""
+  @Input() author: string = ""
+  @Input() replies: string = ""
+  @Input() views: string = ""
+  @Input() created: string = ""
 
   constructor() { }
 

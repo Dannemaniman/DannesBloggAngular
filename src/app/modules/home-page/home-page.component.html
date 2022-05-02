@@ -5,8 +5,8 @@
     </div>
   </section>
   <div class="action-buttons__container">
-    <button class="btn btn-light" (click)="toggleCreateThread()">New topic</button>
-    <button class="btn btn-light">Go to Forum</button>
+    <!-- <button class="btn btn-light" (click)="toggleCreateThread()">New topic</button>
+    <button class="btn btn-light">Go to Forum</button> -->
   </div>
   <section class="page-content__container">
     <aside class="categories__container">
@@ -25,7 +25,7 @@
       <h3 style="color: #7B71C2;">Philosophy</h3>
       <hr />
       <div class="thread-section_quotebox">
-        <h2>You gotta give Respect, to get Respect. <span style="color: #7B71C2;">- Daniel Langås</span></h2>
+        <h2><span style="color: #7B71C2;">Latest Threads</span></h2>
       </div>
       <div class="threads__container" *ngIf="latestThreads">
         <app-thread-bar *ngFor="let item of latestThreads" 

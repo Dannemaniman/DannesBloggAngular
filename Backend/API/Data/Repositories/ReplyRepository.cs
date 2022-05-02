@@ -27,6 +27,7 @@ namespace API.Data.Repositories
     {
       return await _context.UserReplies
         .Where<UserReply>(thread => thread.User == user)
+        .Include(x => x.Thread)
         .ToListAsync();
     }
 

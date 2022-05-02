@@ -4,15 +4,19 @@
       <p>Profile Settings</p>
     </div>
     <div class="password-controller">
+      <p>Curr Password:</p>
+      <input type="text" [(ngModel)]="currentPassword" />
+    </div>    
+    <div class="password-controller">
       <p>New Password:</p>
-      <input type="text" />
+      <input type="text" [(ngModel)]="newPassword" />
     </div>
     <div class="confirm-controller">
       <p>Confirm Password:</p>
-      <input type="text" />
+      <input type="text" [(ngModel)]="confirmedPassword" />
     </div>
     <div class="change-password__button">
-      <button role="button">Change Password</button>
+      <button role="button" (click)="onChangePassword()">Change Password</button>
     </div>
     <div class="delete-controller">
       <p>Delete Account:</p>
@@ -24,7 +28,13 @@
       <p>Created Threads</p>
     </div>
     <div class="profile-threads__content">
-      <app-thread-bar></app-thread-bar>
+      <app-thread-bar *ngFor="let thread of allThreads" 
+        [title]="thread.title" 
+        [author]="thread.author" 
+        [replies]="thread.repliesCount"
+        [views]="thread.viewsCount"
+        [routerLink]="['/category/', thread.categoryId, 'thread', thread.id]">
+      </app-thread-bar>
     </div>
   </section>
   <section class="user-profile__replies">
@@ -32,7 +42,11 @@
       <p>Created Replies</p>
     </div>
     <div class="profile-replies__content">
-      <app-thread-bar></app-thread-bar>
+      <app-thread-bar *ngFor="let reply of allReplies" 
+        [title]="reply.title" 
+        [author]="reply.author" 
+        [routerLink]="['/category/', reply.thread.categoryId, 'thread', reply.id]">
+      </app-thread-bar>
     </div>
   </section>
 </div>
