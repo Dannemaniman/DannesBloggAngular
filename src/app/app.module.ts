@@ -11,7 +11,8 @@ import { ThreadDetailPageComponent } from './modules/thread-detail-page/thread-d
 import { UserProfilePageComponent } from './modules/user-profile-page/user-profile-page.component'
 import { ToastrModule } from "ngx-toastr"
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor'
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
+import { PaginationModule } from 'ngx-bootstrap/pagination'
 //VI TAR SEDAN BORT IMPORTS SOM VI INTE ANVÄNDER FÖR MER CLEAN CODE... 
 //DOCK SÅ KOMMER ANGULAR NÄR DEN BUILDAR APPEN ATT ÄNDÅ INTE COMPILEA KOD SOM INTE ANVÄNDS.. 
 
@@ -31,7 +32,8 @@ import { FormsModule } from '@angular/forms'
     CoreModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
-    })
+    }),
+    PaginationModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

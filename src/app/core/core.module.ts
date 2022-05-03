@@ -8,6 +8,7 @@ import { ReplyComponent } from './components/reply/reply.component';
 import { RegisterModalComponent } from './components/register-modal/register-modal.component'
 import { FormsModule } from "@angular/forms"
 import { AppRoutingModule } from '../app-routing.module'
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 
 @NgModule({
@@ -22,14 +23,16 @@ import { AppRoutingModule } from '../app-routing.module'
   imports: [
     CommonModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    PaginationModule.forRoot()
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     MainMenuComponent,
     ThreadBarComponent,
-    ReplyComponent
+    ReplyComponent,
+    PaginationModule
   ]
 })
 export class CoreModule { }

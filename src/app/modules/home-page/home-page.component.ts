@@ -23,4 +23,8 @@ export class HomePageComponent implements OnInit {
   public toggleCreateThread() {
     this.showThreadCreater = !this.showThreadCreater
   }
+
+  public pageChanged(event: any) {
+    this.threadService.latestPageNumber = event.page
+  }
 }

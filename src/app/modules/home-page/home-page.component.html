@@ -37,6 +37,18 @@
           [routerLink]="['category/', item.categoryId, 'thread', item.id]">
         </app-thread-bar>
       </div>
+      <div class="paginator row">
+        <div class="col-xs-12 col-12">
+          <pagination 
+            *ngIf="this.threadService.latestPagination"
+            [boundaryLinks]="true" 
+            [totalItems]="this.threadService.latestPagination.totalItems"
+            [itemsPerPage]="this.threadService.latestPagination.itemsPerPage"
+            [(ngModel)]="this.threadService.latestPagination.currentPage"
+            (pageChanged)="pageChanged($event)">
+          </pagination>
+        </div>
+      </div>
     </div>
   </section>
   <app-reply *ngIf="showThreadCreater"></app-reply>

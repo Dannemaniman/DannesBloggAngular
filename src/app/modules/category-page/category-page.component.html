@@ -33,20 +33,17 @@
           [routerLink]="['thread/', item.id]">
         </app-thread-bar>
       </div>
-      <div class="control__container">
-        <div class="pagination-nav__container">
-          <ul>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>...</li>
-            <li>15</li>
-          </ul>
+      <div class="paginator row">
+        <div class="col-xs-12 col-12">
+          <pagination 
+            *ngIf="this.threadService.pagination"
+            [boundaryLinks]="true" 
+            [totalItems]="this.threadService.pagination.totalItems"
+            [itemsPerPage]="this.threadService.pagination.itemsPerPage"
+            [(ngModel)]="this.threadService.pagination.currentPage"
+            (pageChanged)="pageChanged($event)">
+          </pagination>
         </div>
-        <!-- <div class="action-buttons__container">
-          <button class="btn btn-light">New topic</button>
-        </div> -->
       </div>
     </div>
   </section>

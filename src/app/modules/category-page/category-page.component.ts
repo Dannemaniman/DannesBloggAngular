@@ -137,8 +137,10 @@ export class CategoryPageComponent implements OnInit {
   }
 
   public onCreateThread(threadData: {title: string, content: string}) {
-    console.log(threadData)
     this.threadService.createNewThread(threadData.title, threadData.content) 
   }
 
+  public pageChanged(event: any) {
+    this.threadService.latestPageNumber = event.page
+  }
 }
