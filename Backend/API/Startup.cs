@@ -61,12 +61,16 @@ namespace API
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
       }
 
-      app.UseHttpsRedirection();//VI ANVÄNDER OCKSÅ HTTPSREDIRECTION.. SÅ IFALL USERN KOMMER IN VIA HTTPS.. SÅ REDIRECTAS USERN TILL HTTPS ENDPOINTS!!:
 
       app.UseRouting();
 
-      app.UseCors(policy => policy.AllowAnyHeader().WithOrigins("http://localhost:4200"));
+      app.UseCors(policy => policy
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .WithOrigins("http://localhost:4200"));
 
+      app.UseHttpsRedirection();//VI ANVÄNDER OCKSÅ HTTPSREDIRECTION.. SÅ IFALL USERN KOMMER IN VIA HTTPS.. SÅ REDIRECTAS USERN TILL HTTPS ENDPOINTS!!:
+      
       app.UseAuthentication(); //måste vara under Cors och ovanför Authorization
       app.UseAuthorization();
 

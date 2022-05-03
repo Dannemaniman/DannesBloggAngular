@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PaginatedResult, Pagination } from '../models/pagination';
 import { Thread } from '../models/thread';
@@ -53,6 +53,14 @@ export class ThreadService {
     private http: HttpClient, 
     private appService: AppService,
     private router: Router) { }
+
+  public async updateThread(title: string, content: string, threadId: string) {
+    const headers = { "Content-Type": "application/json" };
+    const body = {title, content}
+
+    return firstValueFrom(this.http
+      .put<Thread>(`${this.baseUrl}/thread/${threadId}`, body, { headers }))
+  }
 
   public getThreadsByCategory(page?: number, itemsPerPage?: number) {
     const categoryId = this.appService.categoryId

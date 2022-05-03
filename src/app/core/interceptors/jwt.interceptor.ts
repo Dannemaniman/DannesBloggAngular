@@ -15,10 +15,10 @@ export class JwtInterceptor implements HttpInterceptor {
   constructor(private accountService: AccountService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-
     let currentUser: any;
 
-    this.accountService.currentUser$.pipe(take(1)).subscribe(user => currentUser = user)
+    this.accountService.currentUser$.pipe(take(1))
+      .subscribe(user => currentUser = user)
 
     if(currentUser) {
       request = request.clone({
@@ -27,8 +27,6 @@ export class JwtInterceptor implements HttpInterceptor {
         }
       })
     }
-
-    console.log(currentUser)
 
     return next.handle(request)
   }

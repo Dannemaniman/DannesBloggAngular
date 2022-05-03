@@ -26,6 +26,7 @@ namespace API.Helpers
         .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
         .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
       CreateMap<ReplyDto, UserReply>();
+      CreateMap<ThreadUpdateDto, UserThread>();
     }
     //OM AUTOMAPPER TRÄFFAR EN METOD/PROPERTY MED NAMNET Get FÖRE.. SÅ KOMMER DEN KÖRA FUNKTIONEN OCH SÄTTA RETURNVÄRDET TILL AGE! IFALL BÄGGE ÄR INT!
     //Vi injectar denna som en dependency.. så vi lägger till den till application services extension!

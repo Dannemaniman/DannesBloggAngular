@@ -1,40 +1,60 @@
 <div class="thread-page__content">
-  <div class="thread__container">
+  <div class="thread__container" *ngIf="thread">
     <div class="thread-panel">
-      <h2>{{thread?.title}}</h2>
-      <button role="button" class="btn btn-light" (click)="toggleEditThread()">Edit</button>
+      <input *ngIf="isEditing"
+        style="padding: 0.5rem; margin: 1rem;" 
+        type="text" 
+        [placeholder]="thread?.title" 
+        [(ngModel)]="thread.title">
+      <h2 *ngIf="!isEditing">{{thread?.title}}</h2>
+      <button 
+      *ngIf="isEditing"
+      role="button" 
+      class="btn btn-light" 
+      (click)="saveThreadChanges()">
+        Save
+    </button>
+    <button 
+      *ngIf="editAvailable"
+      role="button" 
+      class="btn btn-light" 
+      (click)="toggleEditThread()">
+        Edit
+    </button>
     </div>
     <div class="thread-content">
-      <p>{{thread?.content}}</p>
+      <textarea 
+        [(ngModel)]="thread.content"
+        style="padding: 1rem; width: 100%; height: 300px;" 
+        [disabled]="!this.isEditing">
+          {{thread?.content}}
+      </textarea>
     </div>
     <div class="thread-footer">
       <div class="thread-footer__stats">
         <p>Replies: {{thread?.repliesCount}}</p>
         <p>Views: {{thread?.viewsCount}}</p>
-        <p>By: <span style="color: #7B71C2;">{{thread?.userName}} | {{thread?.email}}</span></p>
+        <p style="display: flex; flex-direction: row; align-items: center;">By: <span style="margin-left: 1rem; color: #7B71C2; font-size: 1.5rem; position: relative; top: -2px;">{{thread?.userName}} | {{thread?.email}}</span></p>
       </div>
-      <p class="thread-footer__written">Written: {{thread?.wasCreated}}</p>
+      <p class="thread-footer__modified">Modified: <span style="font-size: 1.3rem;">{{thread?.wasModified | date:'h:mm | dd/MM/yyyy'}}</span></p>
+      <p class="thread-footer__written">Written: <span style="font-size: 1.3rem;">{{thread?.wasCreated | date:'h:mm | dd/MM/yyyy'}}</span></p>
     </div>
   </div>
   <button role="button" class="btn btn-light m-3 reply-button" (click)="onToggleCreateWindow()">Reply</button>
-  <ng-container *ngFor="let thread of thread?.replies">
+  <ng-container *ngFor="let reply of thread?.replies">
     <div class="reply__container">
       <div class="reply-panel">
-        <p>Title: <span>{{thread?.title}}</span></p>
-        <p>From: <span>{{thread?.user.email}}</span></p>
-        <!-- <p>Written: <span>{{reply.date}}</span></p> -->
+        <p>Title: <span>{{reply?.title}}</span></p>
+        <p>From: <span>{{reply?.user.email}}</span></p>
       </div>
       <div class="reply-content">
-        <p>{{thread?.content}}</p>
+        <p>{{reply?.content}}</p>
       </div>
       <div class="reply-footer">
         <button role="button" class="btn btn-light" (click)="onToggleCreateWindow()">Reply to User</button>
-        <div class="thread-footer__stats">
-          <!-- <p>Replies: {{thread?.replies}}</p>
-          <p>Views: {{thread?.views}}</p> -->
-          <!-- <p>By: {{reply?.email}}</p> -->
-        </div>
-        <p class="reply-footer__written">Written: {{thread?.user.wasCreated}}</p>
+        <div class="thread-footer__stats"></div>
+        <p class="reply-footer__written">Modified: <span style="font-size: 1.3rem;">{{reply?.user.wasModified | date:'h:mm | dd/MM/yyyy'}}</span></p>
+        <p class="reply-footer__written">Written: <span style="font-size: 1.3rem;">{{reply?.user.wasCreated | date:'h:mm | dd/MM/yyyy'}}</span></p>
       </div>
     </div>
   </ng-container>

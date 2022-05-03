@@ -41,12 +41,10 @@
 
     .thread-content {
       background-color: #6D6D6D;
-      min-height: 300px;
+      height: 300px;
       width: 100%;
-      padding: 1rem;
       color: #DBDBDB;
       font-weight: 500;
-      // text-decoration: underline;
     }
 
     .thread-footer {
@@ -57,11 +55,18 @@
 
       .thread-footer__written {
         color: #DBDBDB;
-        text-decoration: underline;
-        width: 100%;
+        width: 40%;
         text-align: right;
         margin: 1.5rem;
         margin-right: 3rem;
+      }
+
+      .thread-footer__modified {
+        color: #DBDBDB;
+        width: 40%;
+        text-align: right;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
       }
 
       .thread-footer__stats {
@@ -70,7 +75,6 @@
         align-items: center;
         width: 100%;
         color: #DBDBDB;
-        text-decoration: underline;
         margin-left: 3rem;
 
         p {
@@ -101,6 +105,7 @@
       p {
         color: #A1A1A1;
         font-size: 1.3rem;
+        margin: 0;
       }
 
       span {
@@ -136,7 +141,6 @@
 
       .reply-footer__written {
         color: #DBDBDB;
-        text-decoration: underline;
         width: 100%;
         text-align: right;
         margin: 1.5rem;
@@ -149,7 +153,6 @@
         align-items: center;
         width: 100%;
         color: #DBDBDB;
-        text-decoration: underline;
         margin-left: 3rem;
 
         p {

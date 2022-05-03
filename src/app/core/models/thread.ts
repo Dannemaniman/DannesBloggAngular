@@ -10,5 +10,6 @@ export interface Thread {
     userName: string
     email: string
     wasCreated: Date
+    wasModified: Date
     replies: Reply[]
 }

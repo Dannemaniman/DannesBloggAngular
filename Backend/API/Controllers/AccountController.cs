@@ -26,7 +26,13 @@ namespace API.Controllers
     private readonly RoleManager<AppRole> _roleManager;
     private readonly IThreadRepository _threadRepository;
     private readonly IReplyRepository _replyRepository;
-    public AccountController(IThreadRepository threadRepository, IReplyRepository replyRepository, RoleManager<AppRole> roleManager, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
+    public AccountController(
+      IThreadRepository threadRepository, 
+      IReplyRepository replyRepository, 
+      RoleManager<AppRole> roleManager, 
+      UserManager<AppUser> userManager, 
+      SignInManager<AppUser> signInManager, 
+      ITokenService tokenService)
     {
       _replyRepository = replyRepository;
       _threadRepository = threadRepository;

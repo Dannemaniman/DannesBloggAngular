@@ -17,6 +17,7 @@ export class ReplyComponent implements OnInit {
 
   @Input('title') modalTitle: string = '';
   @Input() buttonTitle: string = '';
+  @Input() replyTitle: string = '';
 
   @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any) {
     /*     if(this.editForm.dirty) {

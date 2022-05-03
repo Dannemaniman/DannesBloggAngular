@@ -50,7 +50,7 @@ namespace API.Data.Repositories
 
       return await PagedList<UserThread>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
-    public void Update(ThreadDto thread) //denna är annorlunda.. vi kommer inte förändra ngt i databasen.. men vi kommer markera den, att den har blivit modifierad..
+    public void Update(UserThread thread) //denna är annorlunda.. vi kommer inte förändra ngt i databasen.. men vi kommer markera den, att den har blivit modifierad..
     {
       //Vi sätter .Statet av entityn.. till .modified.. detta låter Entity Frameworket uppdatera och lägga till en flag.. som säger att den har blivit modifierad!:
       _context.Entry(thread).State = EntityState.Modified;

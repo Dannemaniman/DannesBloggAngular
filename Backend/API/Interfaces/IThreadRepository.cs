@@ -15,7 +15,7 @@ namespace API.Interfaces
     Task<IEnumerable<UserThread>> GetThreadsFromUserAsync(AppUser user);
     Task<PagedList<UserThread>> GetThreadsByCategoryIdAsync(UserParams userParams, string categoryId);
     void Add(UserThread thread);
-    void Update(ThreadDto thread); //Update kommer bara uppdatera Tracking status i Entity Frameworket.. för att säga att någonting har förändrats.. men alla andra är Tasks!
+    void Update(UserThread thread); //Update kommer bara uppdatera Tracking status i Entity Frameworket.. för att säga att någonting har förändrats.. men alla andra är Tasks!
     Task<bool> SaveAllAsync();
   }
 }

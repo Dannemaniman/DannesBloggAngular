@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http"
 import { Injectable } from '@angular/core'
-import { ReplaySubject } from "rxjs"
+import { BehaviorSubject, ReplaySubject } from "rxjs"
 import { UserChangePassword } from "src/app/modules/user-profile-page/user-profile-page.component"
 import { environment } from "src/environments/environment"
 import { RegisterUser } from "../models/register-user"
@@ -11,8 +11,12 @@ import { User } from "../models/user"
 })
 export class AccountService {
   private readonly ROOT_URL = environment.apiUrl
-  private _currentUserSource = new ReplaySubject<User | null>(1);
+  private _currentUserSource = new BehaviorSubject<User | null>(null);
   public currentUser$ = this._currentUserSource.asObservable();
+
+  public get currentUser() {
+    return this._currentUserSource.getValue();
+  }
 
   constructor(private http: HttpClient) { }
 

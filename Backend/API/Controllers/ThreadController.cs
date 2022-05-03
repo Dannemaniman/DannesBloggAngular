@@ -6,6 +6,7 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -16,12 +17,19 @@ namespace API.Controllers
     private readonly IMapper _mapper;
     private readonly IAppService _appService;
     private readonly IUserRepository _userRepository;
-    public ThreadController(IUserRepository userRepository, IThreadRepository threadRepository, IMapper mapper, IAppService appService)
+    private readonly UserManager<AppUser> _userManager;
+    public ThreadController(
+      IUserRepository userRepository, 
+      IThreadRepository threadRepository, 
+      IMapper mapper, 
+      UserManager<AppUser> userManager, 
+      IAppService appService)
     {
       _userRepository = userRepository;
-      _appService = appService;
-      _mapper = mapper;
       _threadRepository = threadRepository;
+      _mapper = mapper;
+      _userManager = userManager;
+      _appService = appService;
     }
 
     [HttpGet("{threadId}")]
@@ -30,9 +38,36 @@ namespace API.Controllers
     {
       var thread = await _threadRepository.GetThreadByIdAsync(threadId);
 
-      var returnThread = _mapper.Map<ReturnThread>(thread);
+      if (thread == null) return NotFound();
 
-      return returnThread;
+      return _mapper.Map<ReturnThread>(thread);
+    }
+
+    [HttpPut("{threadId}")]
+    [Authorize]
+    public async Task<ActionResult<ReturnThread>> UpdateThread(string threadId, ThreadUpdateDto threadUpdate)
+    {
+      var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    
+      if (username == null) return BadRequest();
+
+      var user = _userManager.Users.SingleOrDefault(x => x.UserName == username);
+
+      if (user == null) return BadRequest();
+
+      var thread = await _threadRepository.GetThreadByIdAsync(Int16.Parse(threadId));
+
+      if (thread == null) return BadRequest();
+
+      if (thread.User.Id != user.Id) return Unauthorized();
+      
+      var updatedThread = _mapper.Map(threadUpdate, thread);
+    
+      _threadRepository.Update(updatedThread);
+
+      if(await _threadRepository.SaveAllAsync()) return NoContent();
+
+      return BadRequest("Failed to update.");
     }
 
     
