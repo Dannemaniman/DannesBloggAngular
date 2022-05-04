@@ -20,7 +20,7 @@ namespace API.Data.Repositories
     }
     public async Task<UserReply> GetReplyByIdAsync(int id)
     {
-       var reply = await _context.UserThreads.FindAsync(id);
+       var reply = await _context.UserReplies.FindAsync(id);
        return _mapper.Map<UserReply>(reply);
     }
 
@@ -50,9 +50,9 @@ namespace API.Data.Repositories
         Jo det gör vi! Kolla nu igen i CreateAsync metoden!! Vi kör våra 2 requests där!
         Vi skickar alltså detta till en metod som executar det åt oss!*/
     }
-    public void Update(ReplyDto replyDto) 
+    public void Update(UserReply reply) 
     {
-      _context.Entry(replyDto).State = EntityState.Modified;
+      _context.Entry(reply).State = EntityState.Modified;
     }
     public async Task<bool> SaveAllAsync()
     {

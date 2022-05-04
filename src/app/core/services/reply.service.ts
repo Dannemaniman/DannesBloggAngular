@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PaginatedResult, Pagination } from '../models/pagination';
 import { Reply } from '../models/reply';
@@ -59,6 +59,14 @@ export class ReplyService {
       }
     })
   } 
+
+  public async updateReply(replyId: string, title: string, content: string, ) {
+    const headers = { "Content-Type": "application/json" };
+    const body = {title, content}
+
+    return firstValueFrom(this.http
+      .put<Reply>(`${this.baseUrl}/reply/${replyId}`, body, { headers }))
+  }
 
   public createNewReply(title: string, content: string, threadId: string) {
     return this.http.post<Reply>(this.baseUrl + '/reply', {title, content, threadId})

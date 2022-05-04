@@ -6,6 +6,7 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -16,17 +17,20 @@ namespace API.Controllers
     private readonly IThreadRepository _threadRepository;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
+    private readonly UserManager<AppUser> _userManager;
 
     public ReplyController(
         IUserRepository userRepository,
         IReplyRepository replyRepository, 
         IThreadRepository threadRepository, 
-        IMapper mapper)
+        IMapper mapper,
+        UserManager<AppUser> userManager)
     {
+      _userRepository = userRepository;
       _replyRepository = replyRepository;
       _threadRepository = threadRepository;
-      _userRepository = userRepository;
       _mapper = mapper;
+      _userManager = userManager;
     }
 
     [HttpGet("{replyId}")]
@@ -34,6 +38,33 @@ namespace API.Controllers
     public async Task<ActionResult<UserReply>> getReplyById(string replyId)
     {
       return await _replyRepository.GetReplyByIdAsync(Int32.Parse(replyId));
+    }
+
+    [HttpPut("{replyId}")]
+    [Authorize]
+    public async Task<ActionResult<ReturnReply>> UpdateThread(string replyId, ReplyUpdateDto replyUpdateDto)
+    {
+      var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    
+      if (username == null) return BadRequest();
+
+      var user = _userManager.Users.SingleOrDefault(x => x.UserName == username);
+
+      if (user == null) return BadRequest();
+
+      var reply = await _replyRepository.GetReplyByIdAsync(Int16.Parse(replyId));
+
+      if (reply == null) return BadRequest();
+
+      if (reply.User.Id != user.Id) return Unauthorized();
+      
+      var updatedReply = _mapper.Map(replyUpdateDto, reply);
+    
+      _replyRepository.Update(updatedReply);
+
+      if(await _replyRepository.SaveAllAsync()) return NoContent();
+
+      return BadRequest("Failed to update.");
     }
 
     [HttpPost()]

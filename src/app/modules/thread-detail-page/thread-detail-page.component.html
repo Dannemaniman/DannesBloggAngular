@@ -25,7 +25,7 @@
     <div class="thread-content">
       <textarea 
         [(ngModel)]="thread.content"
-        style="padding: 1rem; width: 100%; height: 300px;" 
+        style="padding: 2rem; width: 100%; height: 300px;" 
         [disabled]="!this.isEditing">
           {{thread?.content}}
       </textarea>
@@ -44,15 +44,62 @@
   <ng-container *ngFor="let reply of thread?.replies">
     <div class="reply__container">
       <div class="reply-panel">
-        <p>Title: <span>{{reply?.title}}</span></p>
-        <p>From: <span>{{reply?.user.email}}</span></p>
+        <p>Title: 
+          <span  *ngIf="!this.repliesEditing.includes(reply?.id)">
+            {{reply?.title}}
+          </span>
+          <input *ngIf="this.repliesEditing.includes(reply?.id)"
+            style="padding-left: 0.5rem; margin-left: 0.3rem;" 
+            type="text" 
+            [placeholder]="reply?.title" 
+            [(ngModel)]="reply.title">
+          </p>
+        <div style="display: flex; gap: 10px;">
+          <button 
+            *ngIf="this.repliesEditing.includes(reply?.id)"
+            role="button" 
+            class="btn btn-light" 
+            (click)="saveReplyChanges(reply.id, reply.title, reply.content)">
+              Save
+          </button>
+          <button 
+            *ngIf="canUserEditReply(reply?.user?.userName)"
+            role="button" 
+            class="btn btn-light" 
+            (click)="toggleEditReply(reply?.id)">
+              Edit
+          </button>
+          <button 
+            role="button" 
+            class="btn btn-light" 
+            (click)="onToggleCreateWindow(reply?.user?.userName, reply?.title)">
+              Reply to User
+          </button>
+        </div>     
       </div>
       <div class="reply-content">
-        <p>{{reply?.content}}</p>
+        <textarea 
+          [(ngModel)]="reply.content"
+          style="padding: 2rem; width: 100%; min-height: 200px;" 
+          [disabled]="!this.repliesEditing.includes(reply?.id)">
+            {{reply?.content}}
+        </textarea>
       </div>
       <div class="reply-footer">
-        <button role="button" class="btn btn-light" (click)="onToggleCreateWindow()">Reply to User</button>
-        <div class="thread-footer__stats"></div>
+        <div class="thread-footer__stats">
+          <p style="display: flex; flex-direction: row; align-items: center;">
+            By: 
+              <span 
+                style="
+                  margin-left: 1rem; 
+                  color: #7B71C2; 
+                  font-size: 1.5rem; 
+                  position: relative; 
+                  top: -2px;">
+                    {{reply?.user.userName}} | {{reply?.user.email}}
+              </span>
+          </p>
+        </div>
         <p class="reply-footer__written">Modified: <span style="font-size: 1.3rem;">{{reply?.user.wasModified | date:'h:mm | dd/MM/yyyy'}}</span></p>
         <p class="reply-footer__written">Written: <span style="font-size: 1.3rem;">{{reply?.user.wasCreated | date:'h:mm | dd/MM/yyyy'}}</span></p>
       </div>
@@ -61,6 +108,7 @@
   <app-reply *ngIf="toggleReply" 
     title="Reply"
     buttonTitle="Send"
+    [replyTitle]="this.replyToUser ? 'Replying to: ' + this.replyToUser : ''"
     (emitValues)="onValuesEmitted($event.title, $event.content)" 
     (toggleWindow)="onToggleCreateWindow()">
   </app-reply>

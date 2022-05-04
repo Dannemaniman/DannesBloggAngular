@@ -11,7 +11,7 @@
           #title="ngModel" 
           id="title" 
           ngModel 
-          [value]="replyTitle ? replyTitle : ''"
+          [(ngModel)]="replyTitle" 
           name="title"
           required/>
       </div>
@@ -22,7 +22,7 @@
           placeholder="Message..." 
           #content="ngModel" 
           id="content" 
-          ngModel 
+          ngModel
           name="content"
           required>
         </textarea>

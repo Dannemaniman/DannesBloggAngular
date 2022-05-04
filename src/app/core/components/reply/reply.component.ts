@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core'
 import { NgForm, NgModel } from '@angular/forms';
 import { Reply } from '../../models/reply';
 
@@ -14,6 +14,9 @@ export class ReplyComponent implements OnInit {
   emitValues: EventEmitter<{title: string, content: string }> = new EventEmitter();
   @ViewChild("form")
   replyForm!: NgForm;
+
+  @ViewChild("content")
+  contentInput!: ElementRef;
 
   @Input('title') modalTitle: string = '';
   @Input() buttonTitle: string = '';

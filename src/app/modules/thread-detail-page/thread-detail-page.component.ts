@@ -18,6 +18,8 @@ export class ThreadDetailPageComponent implements OnInit, OnDestroy {
   public toggleReply: boolean = false;
   public editAvailable: boolean = false
   public isEditing: boolean = false
+  public replyToUser = ''
+  public repliesEditing: string[] = []
 
   constructor(
     private accountService: AccountService,
@@ -45,6 +47,20 @@ export class ThreadDetailPageComponent implements OnInit, OnDestroy {
     })
   }
 
+  public canUserEditReply(username: string) {
+    return username === this.accountService.currentUser?.userName
+  }
+
+  public toggleEditReply(id: string) {
+    const foundIndex = this.repliesEditing.findIndex(i => i === id)
+
+    if(foundIndex > -1) {
+      this.repliesEditing.splice(foundIndex, 1)
+    } else {
+      this.repliesEditing.push(id)
+    }
+  }
+
   public toggleEditThread() {
     this.isEditing = !this.isEditing
   }
@@ -56,13 +72,25 @@ export class ThreadDetailPageComponent implements OnInit, OnDestroy {
     window.location.reload()
   }
 
+  public async saveReplyChanges(id: string, title: string, content: string){
+    await this.replyService.updateReply(id, title, content)
+    this.toggleEditReply(id)
+    
+    window.location.reload()
+  }
+
   public onValuesEmitted(title: string, content: string) {
     let threadId = this.thread.id.toString()
     this.replyService.createNewReply(title, content, threadId)
       .subscribe(response => window.location.reload())
   }
 
-  public onToggleCreateWindow(data?: any) {
+  public onToggleCreateWindow(replyTo?: string, replyTitle?: string) {
+    if(replyTo) {
+      this.replyToUser = replyTo + ' | ' + replyTitle
+    }
+    console.log(this.replyToUser);
+    
     this.toggleReply = !this.toggleReply
   }
 }
