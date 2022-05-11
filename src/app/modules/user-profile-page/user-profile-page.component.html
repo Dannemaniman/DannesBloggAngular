@@ -46,7 +46,7 @@
       <app-thread-bar *ngFor="let reply of allReplies" 
         [title]="reply.title" 
         [created]="reply.wasCreated.toString()"
-        [routerLink]="['/category/', reply.thread.categoryId, 'thread', reply.id]">
+        [routerLink]="['/category/', reply.thread.categoryId, 'thread', reply.thread.id]">
       </app-thread-bar>
     </div>
   </section>

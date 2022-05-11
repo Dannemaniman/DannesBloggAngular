@@ -8,6 +8,7 @@ namespace API.Entities
     public string? Title { get; set; }
     public string? Content { get; set; }
     public UserThread? Thread { get; set; }
-    public AppUser? User { get; set; }
+    public string? UserName { get; set; }
+    public string? Email { get; set; }
   }
 }

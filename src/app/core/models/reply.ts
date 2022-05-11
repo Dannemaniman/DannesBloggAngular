@@ -1,7 +1,7 @@
 import { Thread } from "./thread"
 
 export interface Reply {
-    id?: number
+    id: number
     wasCreated?: Date
     wasModified?: Date
     title?: string

@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { lastValueFrom, Subscription } from 'rxjs';
 import { Reply } from 'src/app/core/models/reply';
+import { Thread } from 'src/app/core/models/thread';
 import { AccountService } from 'src/app/core/services/account.service';
 import { ReplyService } from 'src/app/core/services/reply.service';
 import { ThreadService } from 'src/app/core/services/thread.service';
@@ -20,11 +21,15 @@ export class ThreadDetailPageComponent implements OnInit, OnDestroy {
   public isEditing: boolean = false
   public replyToUser = ''
   public repliesEditing: string[] = []
+  
+  public canUserRemoveThread = false
+  public canUserRemoveReply = false
 
   constructor(
-    private accountService: AccountService,
+    public accountService: AccountService,
     private replyService: ReplyService, 
     private threadService: ThreadService, 
+    private router: Router,
     private route: ActivatedRoute) { }
 
   public ngOnInit(): void {
@@ -35,7 +40,7 @@ export class ThreadDetailPageComponent implements OnInit, OnDestroy {
 
           if(response.userName === this.accountService.currentUser?.userName) {
             this.editAvailable = true
-          }
+          } 
         })
       )
     })
@@ -84,6 +89,22 @@ export class ThreadDetailPageComponent implements OnInit, OnDestroy {
     this.replyService.createNewReply(title, content, threadId)
       .subscribe(response => window.location.reload())
   }
+
+  public async deleteThread(thread: Thread) {
+    this.threadService.removeThread(thread.id.toString())
+        .subscribe((response: any) => {
+          console.log(response);
+          this.router.navigateByUrl("..")
+        })
+  }
+
+  public async deleteReply(reply: Reply) {
+    this.replyService.removeReply(reply.id?.toString())
+        .subscribe((response: any) => {
+          console.log(response);
+          window.location.reload()
+        })
+}
 
   public onToggleCreateWindow(replyTo?: string, replyTitle?: string) {
     if(replyTo) {

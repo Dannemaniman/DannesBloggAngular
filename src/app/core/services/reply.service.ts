@@ -58,7 +58,11 @@ export class ReplyService {
         this.pagination = response.pagination
       }
     })
-  } 
+  }
+  
+  public removeReply(replyId: string) {
+    return this.http.delete<Reply>(this.baseUrl + '/reply/' + replyId)
+  }
 
   public async updateReply(replyId: string, title: string, content: string, ) {
     const headers = { "Content-Type": "application/json" };

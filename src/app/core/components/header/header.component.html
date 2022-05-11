@@ -14,6 +14,9 @@
       </button>
     </div>
     <div class="login-container" *ngIf="this.accountService.currentUser$ | async">
+      <button style="margin-right: 2rem;" class="btn btn-light" role="button" (click)="toggleAdminPanel()" *ngIf="this.accountService.currentUser?.userName === 'admin'">
+        Admin Panel
+      </button>
       <button class="btn btn-light" role="button" (click)="onLogoutHandler()">
         Logout
       </button>
@@ -26,3 +29,4 @@
   </div>
 </header>
 <app-register-modal (dismiss)="toggleRegisterModal()" *ngIf="showRegisterModal"></app-register-modal>
+<app-admin-panel (toggleWindow)="toggleAdminPanel()" *ngIf="showAdminPanel"></app-admin-panel>

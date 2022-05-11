@@ -61,13 +61,18 @@ namespace API
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
       }
 
-
       app.UseRouting();
 
       app.UseCors(policy => policy
         .AllowAnyHeader()
         .AllowAnyMethod()
         .WithOrigins("http://localhost:4200"));
+
+      app.Use(async (context, next) =>
+      {
+        context.Response.Headers.Add("Referrer-Policy", "no-referrer");
+        await next();
+      });
 
       app.UseHttpsRedirection();//VI ANVÄNDER OCKSÅ HTTPSREDIRECTION.. SÅ IFALL USERN KOMMER IN VIA HTTPS.. SÅ REDIRECTAS USERN TILL HTTPS ENDPOINTS!!:
       

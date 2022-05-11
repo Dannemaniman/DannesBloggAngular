@@ -15,6 +15,6 @@ namespace API.DTOs
     public string? Email { get; set; }
     public DateTime? WasCreated { get; set; }
     public DateTime? WasModified { get; set; }
-    public ICollection<UserReply>? Replies { get; set; }
+    public ICollection<ReturnReply>? Replies { get; set; }
     }
 }

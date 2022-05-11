@@ -7,20 +7,29 @@
         [placeholder]="thread?.title" 
         [(ngModel)]="thread.title">
       <h2 *ngIf="!isEditing">{{thread?.title}}</h2>
+      <div style="display: flex; gap: 10px;">
+        <button 
+        *ngIf="thread.userName === this.accountService.currentUser?.userName || this.accountService.currentUser?.userName === 'admin'"
+        role="button" 
+        class="btn btn-light" 
+        (click)="deleteThread(thread)">
+          Remove
+      </button>
+        <button 
+        *ngIf="isEditing"
+        role="button" 
+        class="btn btn-light" 
+        (click)="saveThreadChanges()">
+          Save
+      </button>
       <button 
-      *ngIf="isEditing"
-      role="button" 
-      class="btn btn-light" 
-      (click)="saveThreadChanges()">
-        Save
-    </button>
-    <button 
-      *ngIf="editAvailable"
-      role="button" 
-      class="btn btn-light" 
-      (click)="toggleEditThread()">
-        Edit
-    </button>
+        *ngIf="editAvailable"
+        role="button" 
+        class="btn btn-light" 
+        (click)="toggleEditThread()">
+          Edit
+      </button>
+    </div>
     </div>
     <div class="thread-content">
       <textarea 
@@ -56,6 +65,13 @@
           </p>
         <div style="display: flex; gap: 10px;">
           <button 
+          *ngIf="reply?.userName === this.accountService.currentUser?.userName || this.accountService.currentUser?.userName === 'admin'"
+          role="button" 
+          class="btn btn-light" 
+          (click)="deleteReply(reply)">
+            Remove
+        </button>
+          <button 
             *ngIf="this.repliesEditing.includes(reply?.id)"
             role="button" 
             class="btn btn-light" 
@@ -63,7 +79,7 @@
               Save
           </button>
           <button 
-            *ngIf="canUserEditReply(reply?.user?.userName)"
+            *ngIf="canUserEditReply(reply?.userName)"
             role="button" 
             class="btn btn-light" 
             (click)="toggleEditReply(reply?.id)">
@@ -72,7 +88,7 @@
           <button 
             role="button" 
             class="btn btn-light" 
-            (click)="onToggleCreateWindow(reply?.user?.userName, reply?.title)">
+            (click)="onToggleCreateWindow(reply?.userName, reply?.title)">
               Reply to User
           </button>
         </div>     
@@ -96,12 +112,12 @@
                   font-size: 1.5rem; 
                   position: relative; 
                   top: -2px;">
-                    {{reply?.user.userName}} | {{reply?.user.email}}
+                    {{reply?.userName}} | {{reply?.email}}
               </span>
           </p>
         </div>
-        <p class="reply-footer__written">Modified: <span style="font-size: 1.3rem;">{{reply?.user.wasModified | date:'h:mm | dd/MM/yyyy'}}</span></p>
-        <p class="reply-footer__written">Written: <span style="font-size: 1.3rem;">{{reply?.user.wasCreated | date:'h:mm | dd/MM/yyyy'}}</span></p>
+        <p class="reply-footer__written">Modified: <span style="font-size: 1.3rem;">{{reply?.wasModified | date:'h:mm | dd/MM/yyyy'}}</span></p>
+        <p class="reply-footer__written">Written: <span style="font-size: 1.3rem;">{{reply?.wasCreated | date:'h:mm | dd/MM/yyyy'}}</span></p>
       </div>
     </div>
   </ng-container>

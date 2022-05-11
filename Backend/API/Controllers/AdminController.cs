@@ -1,4 +1,5 @@
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -63,20 +64,58 @@ namespace API.Controllers
 
 
     [Authorize(Policy = "RequireAdminRole")]
-    [HttpPost("block-user/{username}/{duration}")]
-    public async Task<ActionResult> BlockUser(string username, string duration)
+    [HttpPost("block")]
+    public async Task<ActionResult> BlockUser(BlockDto blockDto)
     {
-      var parsedDuration = DateTime.Parse(duration);
+      var converted = Int32.Parse(blockDto.Duration);
 
-      if(parsedDuration == null) return BadRequest();
+      var user = await _userManager.FindByNameAsync(blockDto.UserName);
 
+      if (user == null) return BadRequest();
+
+      DateTime currentDateMs = DateTime.UtcNow;
+      var blockedUntil = currentDateMs.AddMilliseconds(converted * 1000);
+
+      var blockedUser = new UserBlockList
+      {
+        UserId = user.Id,
+        Duration = blockedUntil
+      };
+
+      var existingUser = await _blockRepository.IsUserBlocked(user.Id);
+
+      if(existingUser == null) 
+      {
+      _blockRepository.Add(blockedUser);
+      }
+
+      if(existingUser != null)
+      {
+        existingUser.Duration = blockedUser.Duration;
+        _blockRepository.Update(existingUser);
+      }
+
+      return Ok(await _blockRepository.SaveAllAsync());
+    }
+
+
+    [Authorize(Policy = "RequireAdminRole")]
+    [HttpPost("unblock/{username}")]
+    public async Task<ActionResult> UnblockUser(string username)
+    {
       var user = await _userManager.FindByNameAsync(username);
 
       if (user == null) return BadRequest();
 
-      var blockedUser = _blockRepository.BlockUser(user, parsedDuration);
+      var userBlockList = await _blockRepository.IsUserBlocked(user.Id);
 
-      return Ok(await _userManager.GetRolesAsync(user));
+      if(userBlockList == null) return NotFound();
+
+      _blockRepository.DeleteBlock(userBlockList);
+
+      if(await _blockRepository.SaveAllAsync()) return Ok();
+
+      return BadRequest();
     }
 
     [Authorize(Policy = "ModeratePhotoRole")]

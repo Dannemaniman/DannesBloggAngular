@@ -26,6 +26,9 @@ namespace API.Helpers
         //Där var första queryn iallafall!
         var count = await source.CountAsync();
         var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();    
+
+        
+
         return new PagedList<T>(items, count, pageNumber, pageSize);
         //DETTA SER KONSTIGT UT FÖR EN KLASS.. PGA JAG HAR EN STATISK METOD SOM SEDAN, EFFECTIVELY, SKAPAR EN NY INSTANCE DENNA KLASSEN SOM VI SEDAN RETURNAR!  SOM INNEHÅLLER ALLA PROPERTIES!
         //DET ÄR DETTA SOM VI GÖR MED AddRange().. VI VILL ADDA ALLA DESSA PROPERTIES TILL DENNA KLASSEN.. SÅ ATT NÄR VI SKAPAR EN NY INSTANCE AV DENNA KLASSEN..

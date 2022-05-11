@@ -4,10 +4,11 @@ namespace API.Interfaces
 {
   public interface IBlockRepository
   {
-    Task<UserBlockList> BlockUser(AppUser user, DateTime duration);
-    void Add(AppUser user);
-    void Update(AppUser user); //Update kommer bara uppdatera Tracking status i Entity Frameworket.. för att säga att någonting har förändrats.. men alla andra är Tasks!
+    Task<UserBlockList> IsUserBlocked(int userId);
+    void Add(UserBlockList userBlockList);
+    void Update(UserBlockList userBlockList); //Update kommer bara uppdatera Tracking status i Entity Frameworket.. för att säga att någonting har förändrats.. men alla andra är Tasks!
+    void DeleteBlock(UserBlockList userBlockList);
     Task<bool> SaveAllAsync();
   }
-  
+
 }

@@ -9,6 +9,7 @@ import { RegisterModalComponent } from './components/register-modal/register-mod
 import { FormsModule } from "@angular/forms"
 import { AppRoutingModule } from '../app-routing.module'
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component'
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     MainMenuComponent,
     ThreadBarComponent,
     ReplyComponent,
-    RegisterModalComponent
+    RegisterModalComponent,
+    AdminPanelComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     MainMenuComponent,
     ThreadBarComponent,
     ReplyComponent,
-    PaginationModule
+    PaginationModule,
+    AdminPanelComponent
   ]
 })
 export class CoreModule { }

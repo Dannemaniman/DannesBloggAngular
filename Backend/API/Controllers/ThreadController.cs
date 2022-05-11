@@ -18,18 +18,49 @@ namespace API.Controllers
     private readonly IAppService _appService;
     private readonly IUserRepository _userRepository;
     private readonly UserManager<AppUser> _userManager;
+    private readonly IBlockRepository _blockRepository;
+
     public ThreadController(
       IUserRepository userRepository, 
       IThreadRepository threadRepository, 
       IMapper mapper, 
       UserManager<AppUser> userManager, 
+      IBlockRepository blockRepository,
       IAppService appService)
     {
+      _blockRepository = blockRepository;
       _userRepository = userRepository;
       _threadRepository = threadRepository;
       _mapper = mapper;
       _userManager = userManager;
       _appService = appService;
+    }
+
+
+    
+    [HttpDelete("{threadId}")]
+    [Authorize]
+    public async Task<ActionResult<bool>> deleteThreadById(string threadId)
+    {
+      var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    
+      if (username == null) return BadRequest();
+
+      var user = _userManager.Users.SingleOrDefault(x => x.UserName == username);
+
+      if (user == null) return BadRequest();
+
+      var thread = await _threadRepository.GetThreadByIdAsync(Int32.Parse(threadId));
+
+      if (thread == null) return NotFound();
+
+      //LÄGG TILL BÅDE HÄR OCH PÅ REPLY VALIDERING FÖR ATT KOLLA IFALL DET VEKRLIGEN ÄR SAMMA USER SOM SKAPADE ELLER ADMIN SOM BARA KAN TA BORT
+
+      _threadRepository.DeleteThreadById(thread);
+
+      if(await _threadRepository.SaveAllAsync()) return Ok();
+
+      return BadRequest();
     }
 
     [HttpGet("{threadId}")]
@@ -55,6 +86,11 @@ namespace API.Controllers
 
       if (user == null) return BadRequest();
 
+      if(await isUserBlocked(user))
+      {
+        return Unauthorized();
+      }
+
       var thread = await _threadRepository.GetThreadByIdAsync(Int16.Parse(threadId));
 
       if (thread == null) return BadRequest();
@@ -72,7 +108,7 @@ namespace API.Controllers
 
     
     [HttpGet("latest")]
-    public async Task<ActionResult<IEnumerable<ReturnThread>>> getLatestThreads([FromQuery]UserParams userParams)
+    public async Task<ActionResult<ICollection<ReturnThread>>> getLatestThreads([FromQuery]UserParams userParams)
     {
       var threads = await _threadRepository.GetLatestThreads(userParams, 10);
 
@@ -80,10 +116,10 @@ namespace API.Controllers
 
       if(threads.Equals(null)) return NotFound();
 
-      return Ok(_mapper.Map<List<ReturnThread>>(threads));
+      return Ok(_mapper.Map<ReturnThread[]>(threads));
     }
 
-    [HttpPost()]
+    [HttpPost]
     [Authorize]
     public async Task<ActionResult<ReturnThread>> createNewThread(ThreadDto threadData)
     {
@@ -91,9 +127,14 @@ namespace API.Controllers
 
       if (username == null) return null;
 
-     var user = await GetUser(username);
+      var user = await GetUser(username);
 
-     if(user == null) return NotFound();
+      if(user == null) return NotFound();
+
+      if(await isUserBlocked(user))
+      {
+        return Unauthorized();
+      }
 
       threadData.User = user;
 
@@ -115,7 +156,7 @@ namespace API.Controllers
         ViewsCount = newThread.ViewsCount,
         UserName = newThread.User.UserName,
         Email = newThread.User.Email,
-        Replies = newThread.Replies,
+        Replies = _mapper.Map<ReturnReply[]>(newThread.Replies),
         WasCreated = newThread.WasCreated
       };
 
@@ -125,18 +166,47 @@ namespace API.Controllers
     [Route("category/{categoryId}")]
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<UserThread>>> getThreadsByCategoryId([FromQuery]UserParams userParams, string categoryId)
+    public async Task<ActionResult<IEnumerable<ReturnThread>>> getThreadsByCategoryId([FromQuery]UserParams userParams, string categoryId)
     {
-      //På grund av att vi är i en ApiController.. Och faktumet att vi har satt det Attributet.. så borde Controllern vara smart nog att 
-      //känna igen när vi skickar upp query string parametrar (pagination info från clienten).. 
-      //Och den kommer matcha dem till UserParams classen!
+      var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+      if (username == null) return null;
+
+      var user = await GetUser(username);
+
+      if(user == null) return NotFound();
+
+      if(await isUserBlocked(user))
+      {
+        return Unauthorized();
+      }
+
       var threads = await _threadRepository.GetThreadsByCategoryIdAsync(userParams, categoryId);
 
       Response.AddPaginationHeader(threads.CurrentPage, threads.PageSize, threads.TotalCount, threads.TotalPages);
 
       if(threads.Equals(null)) return NotFound();
 
-      return Ok(threads);
+      var returnThreads = _mapper.Map<ReturnThread[]>(threads);
+
+      return Ok(returnThreads);
+    }
+
+    public async Task<bool> isUserBlocked(AppUser user) 
+    {
+      var userBlocked = await _blockRepository.IsUserBlocked(user.Id);
+
+      if(userBlocked == null) return false;
+
+      DateTime currentDateMs = DateTime.UtcNow;
+
+      if(DateTime.Compare(currentDateMs, userBlocked.Duration) > 0)
+      {
+        this._blockRepository.DeleteBlock(userBlocked);
+        return false;
+      };
+
+      return true;
     }
 
     public async Task<AppUser> GetUser(string username) 

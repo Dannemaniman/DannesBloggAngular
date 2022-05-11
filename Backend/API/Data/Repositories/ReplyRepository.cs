@@ -24,18 +24,23 @@ namespace API.Data.Repositories
        return _mapper.Map<UserReply>(reply);
     }
 
+    public void DeleteReplyById(UserReply userReply)
+    {
+       _context.Entry(userReply).State = EntityState.Deleted;
+    }
+
     public async Task<IEnumerable<UserReply>> GetRepliesFromUserAsync(AppUser user)
     {
       return await _context.UserReplies
-        .Where<UserReply>(thread => thread.User == user)
+        .Where<UserReply>(reply => reply.UserName == user.UserName)
         .Include(x => x.Thread)
         .ToListAsync();
     }
 
-    public async Task<PagedList<UserReply>> GetRepliesByThreadIdAsync(UserParams userParams, string threadId)
+    public async Task<PagedList<UserReply>> GetRepliesByThreadIdAsync(UserParams userParams, string replyId)
     {
       var query =  _context.UserReplies
-        .Where<UserReply>(thread => thread.Id == Int32.Parse(threadId))
+        .Where<UserReply>(reply => reply.Id == Int32.Parse(replyId))
         .AsNoTracking();
 
       return await PagedList<UserReply>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);

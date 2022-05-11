@@ -16,6 +16,7 @@ namespace API.Controllers
     private readonly IReplyRepository _replyRepository;
     private readonly IThreadRepository _threadRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IBlockRepository _blockRepository;
     private readonly IMapper _mapper;
     private readonly UserManager<AppUser> _userManager;
 
@@ -24,8 +25,10 @@ namespace API.Controllers
         IReplyRepository replyRepository, 
         IThreadRepository threadRepository, 
         IMapper mapper,
+        IBlockRepository blockRepository,
         UserManager<AppUser> userManager)
     {
+      _blockRepository = blockRepository;
       _userRepository = userRepository;
       _replyRepository = replyRepository;
       _threadRepository = threadRepository;
@@ -35,9 +38,53 @@ namespace API.Controllers
 
     [HttpGet("{replyId}")]
     [Authorize]
-    public async Task<ActionResult<UserReply>> getReplyById(string replyId)
+    public async Task<ActionResult<ReturnReply>> getReplyById(string replyId)
     {
-      return await _replyRepository.GetReplyByIdAsync(Int32.Parse(replyId));
+
+      var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+      if (username == null) return null;
+
+      var user = await GetUser(username);
+
+      if(user == null) return NotFound();
+
+      if(await isUserBlocked(user))
+      {
+        return Unauthorized();
+      }
+
+      var reply = await _replyRepository.GetReplyByIdAsync(Int32.Parse(replyId));
+
+      return _mapper.Map<ReturnReply>(reply);
+    }
+    
+    [HttpDelete("{replyId}")]
+    [Authorize]
+    public async Task<ActionResult<bool>> deleteReplyById(string replyId)
+    {
+      var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    
+      if (username == null) return BadRequest();
+
+      var user = _userManager.Users.SingleOrDefault(x => x.UserName == username);
+
+      if (user == null) return BadRequest();
+
+      if(await isUserBlocked(user))
+      {
+        return Unauthorized();
+      }
+
+      var reply = await _replyRepository.GetReplyByIdAsync(Int32.Parse(replyId));
+
+      if (reply == null) return NotFound();
+
+      _replyRepository.DeleteReplyById(reply);
+
+      if(await _replyRepository.SaveAllAsync()) return Ok();
+
+      return BadRequest();
     }
 
     [HttpPut("{replyId}")]
@@ -52,11 +99,16 @@ namespace API.Controllers
 
       if (user == null) return BadRequest();
 
+      if(await isUserBlocked(user))
+      {
+        return Unauthorized();
+      }
+
       var reply = await _replyRepository.GetReplyByIdAsync(Int16.Parse(replyId));
 
       if (reply == null) return BadRequest();
 
-      if (reply.User.Id != user.Id) return Unauthorized();
+      if (reply.UserName != user.UserName) return Unauthorized();
       
       var updatedReply = _mapper.Map(replyUpdateDto, reply);
     
@@ -67,7 +119,7 @@ namespace API.Controllers
       return BadRequest("Failed to update.");
     }
 
-    [HttpPost()]
+    [HttpPost]
     [Authorize]
     public async Task<ActionResult<ReturnReply>> createNewReply(ReplyDto replyDto)
     {
@@ -79,7 +131,13 @@ namespace API.Controllers
 
         if(user == null) return NotFound();
 
-        replyDto.User = user;
+        if(await isUserBlocked(user))
+      {
+        return Unauthorized();
+      }
+
+        replyDto.UserName = user.UserName;
+        replyDto.Email = user.Email;
 
         var thread = await _threadRepository.GetThreadByIdAsync(Int32.Parse(replyDto.ThreadId));
 
@@ -98,8 +156,8 @@ namespace API.Controllers
             Id = newReply.Id,
             Title = newReply.Title,
             Content = newReply.Content,
-            UserName = newReply.User.UserName,
-            Email = newReply.User.Email,
+            UserName = newReply.UserName,
+            Email = newReply.Email,
             WasCreated = newReply.WasCreated
         };
 
@@ -109,17 +167,31 @@ namespace API.Controllers
     [Route("thread/{threadId}")]
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<UserReply>>> getRepliesByThreadId(UserParams userParams, string threadId)
+    public async Task<ActionResult<IEnumerable<ReturnReply>>> getRepliesByThreadId(UserParams userParams, string threadId)
     {
+      var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+      if (username == null) return null;
+
+      var user = await GetUser(username);
+
+      if(user == null) return NotFound();
+
+      if(await isUserBlocked(user))
+      {
+        return Unauthorized();
+      }
+
       var replies = await _replyRepository.GetRepliesByThreadIdAsync(userParams, threadId);
 
       Response.AddPaginationHeader(replies.CurrentPage, replies.PageSize, replies.TotalCount, replies.TotalPages);
 
       if(replies.Equals(null)) return NotFound();
 
-      return Ok(replies);
-    }
+      var returnReplies = _mapper.Map<ReturnReply>(replies);
 
+      return Ok(returnReplies);
+    }
 
 
     public async Task<AppUser> GetUser(string username) 
@@ -129,6 +201,23 @@ namespace API.Controllers
       if(user == null) return null;
 
       return user;
+    }
+
+    public async Task<bool> isUserBlocked(AppUser user) 
+    {
+      var userBlocked = await _blockRepository.IsUserBlocked(user.Id);
+
+      if(userBlocked == null) return false;
+
+      DateTime currentDateMs = DateTime.UtcNow;
+
+      if(DateTime.Compare(currentDateMs, userBlocked.Duration) > 0)
+      {
+        this._blockRepository.DeleteBlock(userBlocked);
+        return false;
+      };
+
+      return true;
     }
   }
 }

@@ -24,10 +24,13 @@ namespace API.Helpers
       CreateMap<MemberUpdateDto, AppUser>();
       CreateMap<UserThread, ReturnThread>()
         .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
-        .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
+        .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+        .ForSourceMember(dest => dest.Replies, opt => opt.DoNotValidate());
       CreateMap<ReplyDto, UserReply>();
+      CreateMap<UserReply, ReturnReply>();
       CreateMap<ThreadUpdateDto, UserThread>();
       CreateMap<ReplyUpdateDto, UserReply>();
+      // CreateMap<IEnumerable<UserThread>, <IEnumerable<ReturnThread>>();
     }
     //OM AUTOMAPPER TRÄFFAR EN METOD/PROPERTY MED NAMNET Get FÖRE.. SÅ KOMMER DEN KÖRA FUNKTIONEN OCH SÄTTA RETURNVÄRDET TILL AGE! IFALL BÄGGE ÄR INT!
     //Vi injectar denna som en dependency.. så vi lägger till den till application services extension!

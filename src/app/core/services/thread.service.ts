@@ -118,6 +118,10 @@ export class ThreadService {
     return this.http.get<Thread>(this.baseUrl + '/thread/' + threadId)
   }
 
+  public removeThread(threadId: string) {
+    return this.http.delete<Thread>(this.baseUrl + '/thread/' + threadId)
+  }
+
   public createNewThread(title: string, content: string) {
     const categoryId = this.appService.categoryId
 

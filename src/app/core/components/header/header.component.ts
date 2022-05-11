@@ -9,6 +9,7 @@ import { AccountService } from "../../services/account.service"
 })
 export class HeaderComponent implements OnInit {
   public showRegisterModal = false;
+  public showAdminPanel = true;
 
   constructor(public accountService: AccountService, private route: Router) { }
 
@@ -30,6 +31,10 @@ export class HeaderComponent implements OnInit {
 
   public goHome() {
     this.route.navigateByUrl("/")
+  }
+
+  public toggleAdminPanel() {
+    this.showAdminPanel = !this.showAdminPanel
   }
 
 }

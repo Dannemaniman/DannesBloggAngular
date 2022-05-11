@@ -19,9 +19,10 @@ namespace API.Data.Repositories
     }
     public async Task<UserThread> GetThreadByIdAsync(int id)
     {
-       return await _context.UserThreads.Include(p => p.User).Include(p => p.Replies).FirstOrDefaultAsync(p => p.Id == id);
-      //  thread.Created = DateTime.UtcNow;
-      //  return _mapper.Map<ReturnThread>(thread);
+       return await _context.UserThreads
+       .Include(p => p.User)
+       .Include(p => p.Replies)
+       .FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<PagedList<UserThread>> GetLatestThreads(UserParams userParams, int amount)
@@ -50,6 +51,12 @@ namespace API.Data.Repositories
 
       return await PagedList<UserThread>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
+
+    public void DeleteThreadById(UserThread userThread)
+    {
+       _context.Entry(userThread).State = EntityState.Deleted;
+    }
+
     public void Update(UserThread thread) //denna är annorlunda.. vi kommer inte förändra ngt i databasen.. men vi kommer markera den, att den har blivit modifierad..
     {
       //Vi sätter .Statet av entityn.. till .modified.. detta låter Entity Frameworket uppdatera och lägga till en flag.. som säger att den har blivit modifierad!:

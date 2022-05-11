@@ -11,6 +11,7 @@ using API.Data.Repositories;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,12 +27,17 @@ namespace API.Controllers
     private readonly RoleManager<AppRole> _roleManager;
     private readonly IThreadRepository _threadRepository;
     private readonly IReplyRepository _replyRepository;
+    private readonly IBlockRepository _blockRepository;
+    private readonly IMapper _mapper;
+
     public AccountController(
       IThreadRepository threadRepository, 
       IReplyRepository replyRepository, 
       RoleManager<AppRole> roleManager, 
       UserManager<AppUser> userManager, 
-      SignInManager<AppUser> signInManager, 
+      SignInManager<AppUser> signInManager,
+      IMapper mapper, 
+      IBlockRepository blockRepository,
       ITokenService tokenService)
     {
       _replyRepository = replyRepository;
@@ -39,15 +45,16 @@ namespace API.Controllers
       _roleManager = roleManager;
       _signInManager = signInManager;
       _userManager = userManager;
+      _mapper = mapper;
       _tokenService = tokenService;
+      _blockRepository = blockRepository;
 
     }
 
     [HttpGet("all-user-replies")]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<UserReply>>> getAllRepliesFromUser()
+    public async Task<ActionResult<IEnumerable<ReturnReply>>> getAllRepliesFromUser()
     {
-
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
       if (username == null) return BadRequest();
@@ -57,18 +64,26 @@ namespace API.Controllers
       if (user == null)
       {
         return BadRequest();
+      }
+
+      if(await isUserBlocked(user))
+      {
+          _signInManager.SignOutAsync();
+          return Unauthorized();
       }
 
       var replies = await _replyRepository.GetRepliesFromUserAsync(user);
 
       if (replies == null) return NotFound();
 
-      return Ok(replies);
+      var returnReplies = _mapper.Map<ReturnReply[]>(replies);
+
+      return Ok(returnReplies);
     }
 
     [HttpGet("all-user-threads")]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<UserThread>>> getAllThreadsFromUser()
+    public async Task<ActionResult<IEnumerable<ReturnThread>>> getAllThreadsFromUser()
     {
 
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -82,11 +97,19 @@ namespace API.Controllers
         return BadRequest();
       }
 
+      if(await isUserBlocked(user))
+      {
+          _signInManager.SignOutAsync();
+          return Unauthorized();
+      }
+
       var threads = await _threadRepository.GetThreadsFromUserAsync(user);
 
       if (threads == null) return NotFound();
 
-      return Ok(threads);
+      var returnThread = _mapper.Map<ReturnThread[]>(threads);
+
+      return Ok(returnThread);
     }
 
     [HttpPost("change-password")]
@@ -106,13 +129,14 @@ namespace API.Controllers
           return BadRequest();
         }
 
-        // ChangePasswordAsync changes the user password
-        var result = await _userManager.ChangePasswordAsync(user,
-            model.CurrentPassword, model.NewPassword);
+        if(await isUserBlocked(user))
+        {
+          _signInManager.SignOutAsync();
+          return Unauthorized();
+        }
 
-        // The new password did not meet the complexity rules or
-        // the current password is incorrect. Add these errors to
-        // the ModelState and rerender ChangePassword view
+        var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
         if (!result.Succeeded)
         {
           return BadRequest();
@@ -137,7 +161,7 @@ namespace API.Controllers
         LastName = registerDto.LastName,
         Age = registerDto.Age,
         Email = registerDto.Email,
-        UserName = registerDto.UserName.ToLower(),
+        UserName = registerDto.UserName, 
         Threads = null
       };
 
@@ -154,10 +178,6 @@ namespace API.Controllers
         UserName = user.UserName,
         Token = await _tokenService.CreateToken(user)
       };
-
-      // await InitializeRoles();
-      // var admin = await CreateAdmin();
-      // return Ok(admin);
     }
 
     [HttpPost("login")]
@@ -170,6 +190,11 @@ namespace API.Controllers
 
       if (user == null) return Unauthorized();
 
+      if(await isUserBlocked(user))
+      {
+        return Unauthorized();
+      }
+
       var result = await _signInManager
         .CheckPasswordSignInAsync(user, loginDto.Password, false);
 
@@ -181,15 +206,36 @@ namespace API.Controllers
         Token = await _tokenService.CreateToken(user)
       };
     }
-
+    [Authorize]
     [HttpPost("logout")]
     public async Task Logout()
     {
       await _signInManager.SignOutAsync();
     }
+
+
+    public async Task<bool> isUserBlocked(AppUser user) 
+    {
+      var userBlocked = await _blockRepository.IsUserBlocked(user.Id);
+
+      if(userBlocked == null) return false;
+
+      DateTime currentDateMs = DateTime.UtcNow;
+
+      if(DateTime.Compare(currentDateMs, userBlocked.Duration) > 0)
+      {
+        this._blockRepository.DeleteBlock(userBlocked);
+        return false;
+      };
+
+      return true;
+    }
+
+
+
     private async Task<bool> UserExists(string username)
     {
-      return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+      return await _userManager.Users.AnyAsync(x => x.UserName == username);
     }
 
     private async Task InitializeRoles()
