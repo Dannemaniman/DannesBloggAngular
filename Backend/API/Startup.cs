@@ -68,17 +68,19 @@ namespace API
         .AllowAnyMethod()
         .WithOrigins("http://localhost:4200"));
 
-      app.Use(async (context, next) =>
-      {
-        context.Response.Headers.Add("Referrer-Policy", "no-referrer");
-        await next();
-      });
 
       app.UseHttpsRedirection();//VI ANVÄNDER OCKSÅ HTTPSREDIRECTION.. SÅ IFALL USERN KOMMER IN VIA HTTPS.. SÅ REDIRECTAS USERN TILL HTTPS ENDPOINTS!!:
       
       app.UseAuthentication(); //måste vara under Cors och ovanför Authorization
       app.UseAuthorization();
 
+      app.Use(async (context, next) =>
+      {
+        context.Response.Headers.Add("Referrer-Policy", "no-referrer");
+        context.Response.Headers.Remove("X-Powered-By");
+        context.Response.Headers.Remove("server");
+        await next();
+      });
       app.UseEndpoints(endpoints => //Och sen har vi middlewaret.. för att faktiskt använda mina endpoints.. och i den har vi en metod för att mappa mina controllers till dem!
       {
         endpoints.MapControllers();

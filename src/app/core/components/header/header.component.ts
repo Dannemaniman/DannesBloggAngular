@@ -9,7 +9,7 @@ import { AccountService } from "../../services/account.service"
 })
 export class HeaderComponent implements OnInit {
   public showRegisterModal = false;
-  public showAdminPanel = true;
+  public showAdminPanel = false;
 
   constructor(public accountService: AccountService, private route: Router) { }
 
