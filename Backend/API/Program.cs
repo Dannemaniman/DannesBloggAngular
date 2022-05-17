@@ -27,6 +27,11 @@ namespace API
                 .ConfigureWebHostDefaults(webBuilder => //Inuti denna.. så säger den också till ifall vi ska använda något annat när vi startar vår app.. dvs Startup.cs 
                 { 
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseKestrel((options) =>
+                    {
+                        // Do not add the Server HTTP header.
+                        options.AddServerHeader = false;
+                    });
                 });
     }
 }
