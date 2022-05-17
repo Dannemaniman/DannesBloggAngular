@@ -19,6 +19,13 @@ namespace API.Extensions
 
       services.AddIdentityCore<AppUser>(opt =>
       {
+        //The user lockout feature is enabled by default, but we state that here explicitly by setting 
+        //the AllowedForNewUsers property to true. Additionally, we configure a lockout time span to two minutes 
+        //(default is five) and maximum failed login attempts to three (default is five). Of course, the time span is set to 
+        //two minutes just for the sake of this example, that value should be a bit higher in production environments.
+        opt.Lockout.AllowedForNewUsers = true;
+        opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+        opt.Lockout.MaxFailedAccessAttempts = 3;
         opt.Password.RequireNonAlphanumeric = false; //Ifall jag vill förenkla lösenordet
         //opt.SignIn. KAN OCKSÅ ANVÄNDAS FÖR ATT FÖRENKLA LOGIN
       })
@@ -43,7 +50,7 @@ namespace API.Extensions
       services.AddAuthorization(opt =>
       {
         opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-        opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+        opt.AddPolicy("RequireDefaultRole", policy => policy.RequireRole("Admin", "Member"));
       });
 
       return services;

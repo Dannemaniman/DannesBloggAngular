@@ -74,13 +74,6 @@ namespace API
       app.UseAuthentication(); //måste vara under Cors och ovanför Authorization
       app.UseAuthorization();
 
-      app.Use(async (context, next) =>
-      {
-        context.Response.Headers.Add("Referrer-Policy", "no-referrer");
-        context.Response.Headers.Remove("X-Powered-By");
-        context.Response.Headers.Remove("server");
-        await next();
-      });
       app.UseEndpoints(endpoints => //Och sen har vi middlewaret.. för att faktiskt använda mina endpoints.. och i den har vi en metod för att mappa mina controllers till dem!
       {
         endpoints.MapControllers();

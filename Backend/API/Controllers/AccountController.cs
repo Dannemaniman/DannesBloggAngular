@@ -52,7 +52,7 @@ namespace API.Controllers
     }
 
     [HttpGet("all-user-replies")]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<IEnumerable<ReturnReply>>> getAllRepliesFromUser()
     {
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -82,7 +82,7 @@ namespace API.Controllers
     }
 
     [HttpGet("all-user-threads")]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<IEnumerable<ReturnThread>>> getAllThreadsFromUser()
     {
 
@@ -113,7 +113,7 @@ namespace API.Controllers
     }
 
     [HttpPost("change-password")]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult> ChangePassword(UserChangePassword model)
     {
       if (ModelState.IsValid)
@@ -183,6 +183,11 @@ namespace API.Controllers
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
+      if(!ModelState.IsValid)
+        return BadRequest();
+
+
+
       var user = await _userManager.Users
       .Include(t => t.Threads)
       .Include(r => r.Replies)
@@ -196,9 +201,15 @@ namespace API.Controllers
       }
 
       var result = await _signInManager
-        .CheckPasswordSignInAsync(user, loginDto.Password, false);
+        .CheckPasswordSignInAsync(user, loginDto.Password, true); //true = enable lockoutOnFailure
+      //we have to enable it by setting it to true. Furthermore, this method returns a SignInResult with the IsLockedOut property we can use to check whether the account is locked out or not.
+      //With that said, let’s modify the Login action:
 
       if (!result.Succeeded) return Unauthorized();
+
+      if (result.IsLockedOut)
+        return Unauthorized("Locked out!! Too many login tries!");
+      
 
       return new UserDto
       {
@@ -206,7 +217,7 @@ namespace API.Controllers
         Token = await _tokenService.CreateToken(user)
       };
     }
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     [HttpPost("logout")]
     public async Task Logout()
     {

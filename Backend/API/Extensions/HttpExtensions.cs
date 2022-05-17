@@ -16,9 +16,6 @@ namespace API.Extensions
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            response.Headers.Remove("X-Powered-By");
-            response.Headers.Remove("server");
-
             //. Innan när man använde custom headers (vilket detta är) Så la man till ett x innan! Så X-Pagination... 
             //Men det gör vi inte längre... ENDA REQUIRET ÄR ATT GE HEADERN ETT SENSIBLE NAMN!:
             response.Headers.Add("Pagination", JsonSerializer.Serialize(paginationHeader));

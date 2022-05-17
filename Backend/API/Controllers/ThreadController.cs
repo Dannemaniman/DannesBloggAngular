@@ -39,7 +39,7 @@ namespace API.Controllers
 
     
     [HttpDelete("{threadId}")]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<bool>> deleteThreadById(string threadId)
     {
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -64,7 +64,7 @@ namespace API.Controllers
     }
 
     [HttpGet("{threadId}")]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<ReturnThread>> getThreadById(int threadId)
     {
       var thread = await _threadRepository.GetThreadByIdAsync(threadId);
@@ -75,7 +75,7 @@ namespace API.Controllers
     }
 
     [HttpPut("{threadId}")]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<ReturnThread>> UpdateThread(string threadId, ThreadUpdateDto threadUpdate)
     {
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -120,7 +120,7 @@ namespace API.Controllers
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<ReturnThread>> createNewThread(ThreadDto threadData)
     {
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -165,7 +165,7 @@ namespace API.Controllers
 
     [Route("category/{categoryId}")]
     [HttpGet]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<IEnumerable<ReturnThread>>> getThreadsByCategoryId([FromQuery]UserParams userParams, string categoryId)
     {
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

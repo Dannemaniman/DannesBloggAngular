@@ -37,7 +37,7 @@ namespace API.Controllers
     }
 
     [HttpGet("{replyId}")]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<ReturnReply>> getReplyById(string replyId)
     {
 
@@ -60,7 +60,7 @@ namespace API.Controllers
     }
     
     [HttpDelete("{replyId}")]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<bool>> deleteReplyById(string replyId)
     {
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -88,7 +88,7 @@ namespace API.Controllers
     }
 
     [HttpPut("{replyId}")]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<ReturnReply>> UpdateThread(string replyId, ReplyUpdateDto replyUpdateDto)
     {
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -120,7 +120,7 @@ namespace API.Controllers
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<ReturnReply>> createNewReply(ReplyDto replyDto)
     {
         var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -166,7 +166,7 @@ namespace API.Controllers
 
     [Route("thread/{threadId}")]
     [HttpGet]
-    [Authorize]
+    [Authorize(Policy = "RequireDefaultRole")]
     public async Task<ActionResult<IEnumerable<ReturnReply>>> getRepliesByThreadId(UserParams userParams, string threadId)
     {
       var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

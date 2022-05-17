@@ -117,12 +117,5 @@ namespace API.Controllers
 
       return BadRequest();
     }
-
-    [Authorize(Policy = "ModeratePhotoRole")]
-    [HttpGet("photos-to-moderate")]
-    public ActionResult GetPhotosForModeration()
-    {
-      return Ok("Admins or Moderators can see this");
-    }
   }
 }
